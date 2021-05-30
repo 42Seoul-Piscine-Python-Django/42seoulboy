@@ -1,7 +1,15 @@
 {% extends 'base.html' %} {% block title %}
 <title>MOVIEDEX | MOVIEMON</title>
 {% endblock title %} {% block content %}
-<div class="">
-  <h1>moviedex</h1>
+<div class="moviedex-container">
+  <div class="moviedex-card-container">
+    {% for movie in movies %}
+    <img class="moviedex-card {{ movie.class }}" src="{{ movie.poster }}" />
+    {% endfor %}
+  </div>
+  <div class="moviedex-button-disc">
+    <span class="moviedex-button">A - Show Movie Detail</span>
+    <span class="moviedex-button">B - Back To WorldMap</span>
+  </div>
 </div>
 {% endblock content %}

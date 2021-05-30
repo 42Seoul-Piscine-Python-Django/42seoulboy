@@ -1,3 +1,4 @@
+from moviemon.middleware.loadSessionMiddleware import loadSession_middleware
 from django.shortcuts import redirect, render
 from django.views.generic import TemplateView
 
@@ -12,6 +13,7 @@ class Moviedex_detail(TemplateView):
     template_name = "moviedex_detail.html"
     context = {}
 
+    @loadSession_middleware
     def get(self, request, moviemon_id):
         self.context['moviemon_id'] = moviemon_id
         """
@@ -32,7 +34,7 @@ class Moviedex_detail(TemplateView):
             if (key == 'a'):
                 pass
             elif (key == 'b'):
-                pass
+                return redirect('moviedex')
             elif (key == 'start'):
                 pass
             elif (key == 'select'):

@@ -1,3 +1,5 @@
+from moviemon.utils.game_data import GameData, load_session_data
+from moviemon.middleware.loadSessionMiddleware import loadSession_middleware
 from django.shortcuts import redirect, render
 from django.views.generic import TemplateView
 
@@ -12,6 +14,7 @@ class Worldmap(TemplateView):
     template_name = "worldmap.html"
     context = {}
 
+    @loadSession_middleware
     def get(self, request):
         key = request.GET.get('key', None)
         """
@@ -32,9 +35,9 @@ class Worldmap(TemplateView):
             elif (key == 'b'):
                 pass
             elif (key == 'start'):
-                pass
+                return redirect('options')
             elif (key == 'select'):
-                pass
+                return redirect('moviedex')
             print(position)
             return redirect(request.path)
         return render(request, self.template_name, self.context)

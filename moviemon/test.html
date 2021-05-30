@@ -1,23 +1,21 @@
-{% load static %}
-
 <!DOCTYPE html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    {% block title %}
-    <title>MOVIEMON</title>
-    {% endblock title %}
+
+    <title>MOVIEDEX | MOVIEMON</title>
+
     <script
       type="text/javascript"
-      src="{% static 'js/button_events.js' %}"
+      src="/moviemon/static/js/button_events.js"
     ></script>
     <style>
       @font-face {
         font-family: "PKMN RBYGSC";
         font-style: normal;
-        src: url("{% static 'fonts/PKMN_RBYGSC.ttf' %}") format("truetype");
+        src: url("/moviemon/static/fonts/PKMN_RBYGSC.ttf") format("truetype");
       }
       .container {
         margin-left: auto;
@@ -25,7 +23,7 @@
         width: 60vh;
         height: calc(1.624 * 60vh);
         font-family: "PKMN RBYGSC";
-        background-image: url("{% static 'images/gameboy.png' %}");
+        background-image: url("/moviemon/static/images/gameboy.png");
         background-size: cover;
         position: relative;
       }
@@ -128,7 +126,7 @@
         width: 100%;
         height: 100%;
         border-radius: 25px;
-        background-image: url("{% static 'images/battle_scene.png' %}");
+        background-image: url("/moviemon/static/images/battle_scene.png");
         background-size: contain;
         position: relative;
       }
@@ -221,7 +219,7 @@
       .moviedex-blur {
         background-color: rgba(0, 0, 0, 0.125);
         box-shadow: inset 0 0 0 1000px rgba(255, 255, 255, 0.5);
-        filter: blur(3px);
+        filter: blur(15px);
       }
       .moviedex-button-disc {
         display: flex;
@@ -234,22 +232,46 @@
         border: solid #545454 0.25vh;
         font-size: 1.5vh;
       }
-      .moviedex-ative {
+      .moviedex-ativate {
         transform: scale(1.2);
       }
     </style>
   </head>
   <body>
     <div class="container">
-      <div class="content">{% block content %}{% endblock content %}</div>
-      <a href="{{ request.path }}?key=up" id="btn-up"></a>
-      <a href="{{ request.path }}?key=left" id="btn-left"></a>
-      <a href="{{ request.path }}?key=right" id="btn-right"></a>
-      <a href="{{ request.path }}?key=down" id="btn-down"></a>
-      <a href="{{ request.path }}?key=a" id="btn-a"></a>
-      <a href="{{ request.path }}?key=b" id="btn-b"></a>
-      <a href="{{ request.path }}?key=select" id="btn-select"></a>
-      <a href="{{ request.path }}?key=start" id="btn-start"></a>
+      <div class="content">
+        <div class="moviedex-container">
+          <div class="moviedex-card-container">
+            <img
+              class="moviedex-card"
+              src="https://m.media-amazon.com/images/M/MV5BNjBlNDUzMzAtMTdkNC00NzZiLWFmYjMtMzYyYjZjZjljY2VmXkEyXkFqcGdeQXVyNDcyOTc1OTk@._V1_SX300.jpg"
+            />
+            <img
+              class="moviedex-card moviedex-ativate"
+              src="https://m.media-amazon.com/images/M/MV5BNjBlNDUzMzAtMTdkNC00NzZiLWFmYjMtMzYyYjZjZjljY2VmXkEyXkFqcGdeQXVyNDcyOTc1OTk@._V1_SX300.jpg"
+            />
+            <img
+              class="moviedex-card"
+              src="https://m.media-amazon.com/images/M/MV5BNjBlNDUzMzAtMTdkNC00NzZiLWFmYjMtMzYyYjZjZjljY2VmXkEyXkFqcGdeQXVyNDcyOTc1OTk@._V1_SX300.jpg"
+            />
+          </div>
+          <div class="moviedex-button-disc">
+            <span class="moviedex-button">A - Show Movie Detail</span>
+            <span class="moviedex-button">B - Back To WorldMap</span>
+          </div>
+        </div>
+      </div>
+      <a href="/moviedex?key=up" id="btn-up"></a>
+      <a href="/moviedex?key=right" id="btn-right"></a>
+      <a href="/moviedex?key=down" id="btn-down"></a>
+      <a href="/moviedex?key=a" id="btn-a"></a>
+      <a href="/moviedex?key=b" id="btn-b"></a>
+      <a href="/moviedex?key=select" id="btn-select"></a>
+      <a href="/moviedex?key=start" id="btn-start"></a>
+    </div>
+
+    <div id="gtx-trans" style="position: absolute; left: 343px; top: 183.969px">
+      <div class="gtx-trans-icon"></div>
     </div>
   </body>
 </html>

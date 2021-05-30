@@ -17,7 +17,7 @@ function handle_right() {
 function handle_a() {
   document.getElementById("btn-a").click();
 }
-function handle_left() {
+function handle_b() {
   document.getElementById("btn-b").click();
 }
 
@@ -30,28 +30,28 @@ function handle_select() {
 }
 
 window.addEventListener("keydown", (event) => {
-  if (event.key === "w" || event.key === "ArrowUp") {
+  if (event.code === "KeyW" || event.code === "ArrowUp") {
     return handle_up();
   }
-  if (event.key === "s" || event.key === "ArrowDown") {
+  if (event.code === "KeyS" || event.code === "ArrowDown") {
     return handle_down();
   }
-  if (event.key === "a" || event.key === "ArrowLeft") {
+  if (event.code === "KeyA" || event.code === "ArrowLeft") {
     return handle_left();
   }
-  if (event.key === "d" || event.key === "ArrowRight") {
-    return handle_up();
+  if (event.code === "KeyD" || event.code === "ArrowRight") {
+    return handle_right();
   }
-  if (event.key === "n") {
+  if (event.code === "KeyN") {
     return handle_a();
   }
-  if (event.key === "m") {
+  if (event.code === "KeyM") {
     return handle_b();
   }
-  if (event.key === "o") {
+  if (event.code === "KeyO") {
     return handle_select();
   }
-  if (event.key === "p") {
+  if (event.code === "KeyP") {
     return handle_start();
   }
 });

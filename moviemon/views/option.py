@@ -1,3 +1,4 @@
+from moviemon.middleware.loadSessionMiddleware import loadSession_middleware
 from django.shortcuts import redirect, render
 from django.views.generic import TemplateView
 
@@ -30,9 +31,9 @@ class Option(TemplateView):
             if (key == 'a'):
                 pass
             elif (key == 'b'):
-                pass
+                return redirect('title')
             elif (key == 'start'):
-                pass
+                return redirect('worldmap')
             elif (key == 'select'):
                 pass
             print(position)
@@ -44,6 +45,7 @@ class OptionSave(TemplateView):
     template_name = "save.html"
     context = {}
 
+    @loadSession_middleware
     def get(self, request):
         """
         TODO: key에 대한 이벤트 핸들링 필요
@@ -62,7 +64,7 @@ class OptionSave(TemplateView):
             if (key == 'a'):
                 pass
             elif (key == 'b'):
-                pass
+                return redirect('options')
             elif (key == 'start'):
                 pass
             elif (key == 'select'):
@@ -94,7 +96,7 @@ class OptionLoad(TemplateView):
             if (key == 'a'):
                 pass
             elif (key == 'b'):
-                pass
+                return redirect('title')
             elif (key == 'start'):
                 pass
             elif (key == 'select'):
