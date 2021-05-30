@@ -1,0 +1,180 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% block title %}
+    <title>MOVIEMON</title>
+    {% endblock title %}
+    <link href="" rel="stylesheet" type="text/css" />
+    <style>
+      @font-face {
+        font-style: normal;
+        src: url("{% static 'fonts/PKMN_RBYGSC.ttf' %}") format("truetype");
+      }
+      .container {
+        margin-left: auto;
+        margin-right: auto;
+        width: 60vh;
+        height: calc(1.624 * 60vh);
+        font-family: "PKMN RBYGSC";
+        background-image: url("{% static 'images/gameboy.png' %}");
+        background-size: cover;
+        position: relative;
+      }
+      .content {
+        width: 50vh;
+        height: calc(0.75 * 50vh);
+        background-color: black;
+        position: absolute;
+        border-radius: 25px;
+        top: 9vh;
+        left: 5vh;
+        color: white;
+      }
+      .btn-up {
+        background-color: rgba(0, 0, 0, 0);
+        position: absolute;
+        width: 5vh;
+        height: 6.5vh;
+        top: 58.5vh;
+        left: 10.3vh;
+        border-radius: 10px;
+        border-bottom-right-radius: 50px;
+        border-bottom-left-radius: 50px;
+      }
+      .btn-down {
+        background-color: rgba(0, 0, 0, 0);
+        position: absolute;
+        width: 5vh;
+        height: 6.5vh;
+        top: 67vh;
+        left: 10.3vh;
+        border-radius: 10px;
+        border-top-right-radius: 50px;
+        border-top-left-radius: 50px;
+      }
+      .btn-left {
+        background-color: rgba(0, 0, 0, 0);
+        position: absolute;
+        width: 6.5vh;
+        height: 5vh;
+        top: 63.5vh;
+        left: 5.5vh;
+        border-radius: 10px;
+        border-top-right-radius: 50px;
+        border-bottom-right-radius: 50px;
+      }
+      .btn-right {
+        background-color: rgba(0, 0, 0, 0);
+        position: absolute;
+        width: 6.5vh;
+        height: 5vh;
+        top: 63.5vh;
+        left: 13.5vh;
+        border-radius: 10px;
+        border-top-left-radius: 50px;
+        border-bottom-left-radius: 50px;
+      }
+      .btn-a {
+        background-color: rgba(0, 0, 0, 0);
+        position: absolute;
+        width: 7vh;
+        height: 7vh;
+        top: 59.6vh;
+        left: 47.1vh;
+        border-radius: 50vh;
+      }
+      .btn-b {
+        background-color: rgba(0, 0, 0, 0);
+        position: absolute;
+        width: 7vh;
+        height: 7vh;
+        top: 64vh;
+        left: 37.7vh;
+        border-radius: 50vh;
+      }
+      .btn-select {
+        background-color: rgba(0, 0, 0, 0);
+        position: absolute;
+        transform: rotate(155deg);
+        width: 8vh;
+        height: 1.5vh;
+        bottom: 17vh;
+        left: 18vh;
+        border-radius: 50vh;
+      }
+      .btn-start {
+        background-color: rgba(0, 0, 0, 0);
+        position: absolute;
+        transform: rotate(155deg);
+        width: 8vh;
+        height: 1.5vh;
+        bottom: 17vh;
+        left: 28vh;
+        border-radius: 50vh;
+      }
+
+      /* BATTLE SCENE */
+
+      .battle_scene {
+        width: 100%;
+        height: 100%;
+        border-radius: 25px;
+        background-image: url("{% static 'images/battle_scene.png' %}");
+        background-size: contain;
+        position: relative;
+      }
+      .battle_poster {
+        position: absolute;
+        width: 13vh;
+        height: 15vh;
+        right: 2.5vh;
+        top: 1vh;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-image: url("https://m.media-amazon.com/images/M/MV5BMTE3N2IwNmMtOGE0Ny00NWFlLTliNmUtNjY3ODExYjgxNmUyXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg");
+      }
+      .movie_strength {
+        position: absolute;
+        font-size: 1vh;
+        left: 22vh;
+        top: 3.8vh;
+        color: #383838;
+        text-shadow: 1px 1px 1px #383838;
+      }
+      .movie_name {
+        position: absolute;
+        font-size: 1.5vh;
+        left: 3.5vh;
+        top: 3.5vh;
+        color: #383838;
+        text-shadow: 1px 1px 1px #383838;
+      }
+      .battle_text {
+        position: absolute;
+        font-size: 2vh;
+        left: 3.5vh;
+        top: 26vh;
+        color: #383838;
+        text-shadow: 1px 1px 1px #383838;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="content">{% block content %}{% endblock content %}</div>
+      <a href="{{ request.path }}?key=up" class="btn-up"></a>
+      <a href="{{ request.path }}?key=left" class="btn-left"></a>
+      <a href="{{ request.path }}?key=right" class="btn-right"></a>
+      <a href="{{ request.path }}?key=down" class="btn-down"></a>
+      <a href="{{ request.path }}?key=a" class="btn-a"></a>
+      <a href="{{ request.path }}?key=b" class="btn-b"></a>
+      <a href="{{ request.path }}?key=select" class="btn-select"></a>
+      <a href="{{ request.path }}?key=start" class="btn-start"></a>
+    </div>
+  </body>
+</html>
