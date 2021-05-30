@@ -9,7 +9,10 @@
     {% block title %}
     <title>MOVIEMON</title>
     {% endblock title %}
-    <link href="" rel="stylesheet" type="text/css" />
+    <script
+      type="text/javascript"
+      src="{% static 'js/button_events.js' %}"
+    ></script>
     <style>
       @font-face {
         font-style: normal;
@@ -35,7 +38,7 @@
         left: 5vh;
         color: white;
       }
-      .btn-up {
+      #btn-up {
         background-color: rgba(0, 0, 0, 0);
         position: absolute;
         width: 5vh;
@@ -46,7 +49,7 @@
         border-bottom-right-radius: 50px;
         border-bottom-left-radius: 50px;
       }
-      .btn-down {
+      #btn-down {
         background-color: rgba(0, 0, 0, 0);
         position: absolute;
         width: 5vh;
@@ -57,7 +60,7 @@
         border-top-right-radius: 50px;
         border-top-left-radius: 50px;
       }
-      .btn-left {
+      #btn-left {
         background-color: rgba(0, 0, 0, 0);
         position: absolute;
         width: 6.5vh;
@@ -68,7 +71,7 @@
         border-top-right-radius: 50px;
         border-bottom-right-radius: 50px;
       }
-      .btn-right {
+      #btn-right {
         background-color: rgba(0, 0, 0, 0);
         position: absolute;
         width: 6.5vh;
@@ -79,7 +82,7 @@
         border-top-left-radius: 50px;
         border-bottom-left-radius: 50px;
       }
-      .btn-a {
+      #btn-a {
         background-color: rgba(0, 0, 0, 0);
         position: absolute;
         width: 7vh;
@@ -88,7 +91,7 @@
         left: 47.1vh;
         border-radius: 50vh;
       }
-      .btn-b {
+      #btn-b {
         background-color: rgba(0, 0, 0, 0);
         position: absolute;
         width: 7vh;
@@ -97,7 +100,7 @@
         left: 37.7vh;
         border-radius: 50vh;
       }
-      .btn-select {
+      #btn-select {
         background-color: rgba(0, 0, 0, 0);
         position: absolute;
         transform: rotate(155deg);
@@ -107,7 +110,7 @@
         left: 18vh;
         border-radius: 50vh;
       }
-      .btn-start {
+      #btn-start {
         background-color: rgba(0, 0, 0, 0);
         position: absolute;
         transform: rotate(155deg);
@@ -167,14 +170,14 @@
   <body>
     <div class="container">
       <div class="content">{% block content %}{% endblock content %}</div>
-      <a href="{{ request.path }}?key=up" class="btn-up"></a>
-      <a href="{{ request.path }}?key=left" class="btn-left"></a>
-      <a href="{{ request.path }}?key=right" class="btn-right"></a>
-      <a href="{{ request.path }}?key=down" class="btn-down"></a>
-      <a href="{{ request.path }}?key=a" class="btn-a"></a>
-      <a href="{{ request.path }}?key=b" class="btn-b"></a>
-      <a href="{{ request.path }}?key=select" class="btn-select"></a>
-      <a href="{{ request.path }}?key=start" class="btn-start"></a>
+      <a href="{{ request.path }}?key=up" id="btn-up"></a>
+      <a href="{{ request.path }}?key=left" id="btn-left"></a>
+      <a href="{{ request.path }}?key=right" id="btn-right"></a>
+      <a href="{{ request.path }}?key=down" id="btn-down"></a>
+      <a href="{{ request.path }}?key=a" id="btn-a"></a>
+      <a href="{{ request.path }}?key=b" id="btn-b"></a>
+      <a href="{{ request.path }}?key=select" id="btn-select"></a>
+      <a href="{{ request.path }}?key=start" id="btn-start"></a>
     </div>
   </body>
 </html>
