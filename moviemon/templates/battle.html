@@ -1,0 +1,10 @@
+{% extends 'base.html' %} {% block title %}
+<title>BATTLE | MOVIEMON</title>
+{% endblock title %} {% block content %}
+<div class="battle_scene">
+  <div class="movie_name">{{ moviemon_id }}</div>
+  <div class="movie_strength">LV 4.5</div>
+  <div class="battle_poster"></div>
+  <div class="battle_text">야생의 {{ moviemon_id }}를 만났다.</div>
+</div>
+{% endblock content %}
