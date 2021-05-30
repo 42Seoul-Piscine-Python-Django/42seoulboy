@@ -1,3 +1,5 @@
 #!/bin/sh
 
-lsof -t -i tcp:8000 | xargs kill -9
+port=8000
+
+lsof -t -i tcp:$port | xargs kill -9

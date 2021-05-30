@@ -13,12 +13,12 @@ pip install -r requirements.txt
 
 python -m django --version
 
-pagename="d04"
+pagename="moviemon"
 django-admin startproject $pagename
 cd $pagename
-python3 manage.py startapp ex00
-python3 manage.py startapp ex01
-python3 manage.py startapp ex02
-python3 manage.py startapp ex03
+# python3 manage.py startapp ex00
+# python3 manage.py startapp ex01
+# python3 manage.py startapp ex02
+# python3 manage.py startapp ex03
 
 python3 manage.py migrate
