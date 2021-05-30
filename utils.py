@@ -12,6 +12,9 @@ def clip(value, cliprange: tuple):
 
 
 def movieball(mon_str, player_str):
+    """
+    포획 성공 여부 반환 (무비몬, 플레이어의 힘을 비교)
+    """
     chances = clip(50 - (mon_str * 10) + (player_str * 5), (1, 90))
 
     return randint(1, 100) <= chances
