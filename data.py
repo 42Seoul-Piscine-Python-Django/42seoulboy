@@ -2,8 +2,7 @@ import pickle
 
 
 class Data:
-    @classmethod
-    def save(cls, target: dict, filename: str):
+    def save(self, target: dict, filename: str):
         assert type(target) is dict, "input is not dict"
         assert type(filename) is str, "invalid filename"
         try:
@@ -12,21 +11,35 @@ class Data:
         except Exception as e:
             print(f"exeption {e}!")
 
-    @classmethod
-    def load(cls, filename):
+    def load(self, filename):
         assert type(filename) is str, "invalid filename"
         try:
             with open(filename, "rb") as f:
-                return pickle.load(f)
+                self.data = pickle.load(f)
+                return self
         except Exception as e:
             print(f"exeption {e}!")
+
+    def get_random_movie():
+        pass
+
+    def load_default_settings():
+        pass
+
+    def get_strength():
+        pass
+
+    def get_movie():
+        pass
+        # return dicts
 
 
 if __name__ == "__main__":
     from moviemon import Moviemon
 
+    data = Data()
     print("saving")
     test = {"mov": [Moviemon("1234")]}
-    Data.save(test, "test")
+    data.save(test, "test")
     print("loading")
-    print(Data.load("test"))
+    print(data.load("test"))
