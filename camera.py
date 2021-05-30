@@ -18,10 +18,12 @@ class Camera:
         self.offset_x = offset_x
         self.offset_y = offset_y
 
-    def snapshot(self):
-        pass
-
     def render(self, map, x, y):
+        """
+        최종적으로 정해진 크기의 화면을 출력하는 함수.
+        이 함수를 마지막으로 호출하고 반환값을 최종 화면 결과물로 웹서버에 보내야 함.
+        결과물로 나온 화면 일부를 후처리할수도 있지만 좌표 계산이 워낙 어려운 관계로 권장하지 않음.
+        """
         global debug
         try:
             if debug:
