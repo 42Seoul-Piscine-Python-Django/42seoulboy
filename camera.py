@@ -50,7 +50,7 @@ class Camera:
 
 
 if __name__ == "__main__":
-    testcam = Camera(4, 4, -2, -1)
+    testcam = Camera(5, 5, -2, -1)
 
     import sys
 

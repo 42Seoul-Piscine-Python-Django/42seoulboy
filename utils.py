@@ -72,11 +72,11 @@ if __name__ == "__main__":
     testdict = {
         clip: {
             (15, (1, 10)): 10,
-            (3, (11, 15)): 111,
+            (3, (11, 15)): 1,
         },
     }
-    # tester(testdict)
+    tester(testdict)
 
-    for _ in range(50):
-        m, p = randint(1.0, 10.0), randint(1.0, 20.0)
-        print(f"m:{m} p:{p} {movieball(m, p)}")
+    # for _ in range(50):
+    #     m, p = randint(1.0, 10.0), randint(1.0, 20.0)
+    #     print(f"m:{m} p:{p} {movieball(m, p)}")

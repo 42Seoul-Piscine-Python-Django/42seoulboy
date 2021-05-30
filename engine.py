@@ -62,28 +62,16 @@ class Engine:
 
     def render(self):
         """
-        지도의 특정 부분을 잘라서 반환함.
+        새 2차원 배열에 객체들을 그래픽 처리해 추가하여 반환.
         """
-        screen = self.camera.render(self.map, self.px, self.py)
-        # for l in screen:
-        #     print(l)
-        lines = []
-        for y in range(len(screen)):
-            l = ""
-            for x in range(len(screen[0])):
-                if (self.py, self.px) == (y, x):
-                    l += "@"
-                elif self.screen[y][x].content:
-                    l += "X"
-                else:
-                    l += "."
-            lines.append(l)
-        for l in lines:
-            print(l)
 
+        def cut_to_screen(self):
+            """
+            화면을 스크린 크기에 맞춰 잘라 반환
+            """
+            return self.camera.render(self.map, self.px, self.py)
 
-class Player:
-    pass
+        return cut_to_screen()
 
 
 class Tile:
@@ -94,11 +82,11 @@ class Tile:
     def __str__(self):
         return " ".join([str(i) for i in self.content])
 
-    def somefun(self):
-        print("hi")
-
 
 if __name__ == "__main__":
+    """
+    엔진 쇼케이스: wasd로 이동, q/x 로 종료.
+    """
     engine = Engine(
         WIDTH, HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT, CAMOFFSET_X, CAMOFFSET_Y
     )
