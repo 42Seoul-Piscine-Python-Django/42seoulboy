@@ -9,6 +9,8 @@ import random
 
 battleState = {"id": [], "text": "Gotcha!! {} "}
 
+data = Data()
+
 
 class Battle(TemplateView):
     template_name = "battle.html"
@@ -16,11 +18,12 @@ class Battle(TemplateView):
 
     def get_user_rating(self):
         # game = GameData.load(load_session_data())
-        captured_list = game.captured_list
+        captured_list = data.get("my_moviemons")
         sum_captured_rating = 0
         for i in captured_list:
+            pass
             # movie_mon = game.moviemon[captured_list[i]]
-            sum_captured_rating += game.moviemon[i]["rating"]
+            # sum_captured_rating += game.moviemon[i]["rating"]
         if len(captured_list) == 0:
             return int(sum_captured_rating / 1)
         return int(sum_captured_rating / len(captured_list))

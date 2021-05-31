@@ -49,8 +49,8 @@ class Engine:
                     l += "X"
             lines.append(l)
         pre_render = lines
-        for l in pre_render:
-            print(l)
+        # for l in pre_render:
+        #     print(l)
 
         def cut_to_screen():
             """

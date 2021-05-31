@@ -2,6 +2,7 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=macos,windows,linux,python,django
 
 ### saves ###
+LOCAL
 slot*.mmg
 ### Django ###
 *.log

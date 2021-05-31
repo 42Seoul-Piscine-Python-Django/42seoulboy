@@ -37,51 +37,62 @@ class Data:
 
             self.slot = current_slot  # A, B, C 중 하나
             if data:
-                Data.data = data
+                self.data = data
             elif self.slot == "LOCAL":
-                Data.data = self.load_default_settings()
+                self.data = self.load_default_settings()
             else:
-                Data.data = self.load()
+                self.data = self.load()
 
     def __make_slot(self):
         # print("\n\n\nCURRENT SLOT:", self.slot)
         n = self.slot.lower()
-        sc = len(Data.data.get("my_moviemons"))
-        tot = len(Data.data.get("not_yet_moviemons"))
+        sc = len(self.data.get("my_moviemons"))
+        tot = len(self.data.get("not_yet_moviemons"))
         score = f"{sc}_{sc + tot}"
         return f"slot{n}_{score}.mmg"
 
     def save(self, slot="LOCAL"):
-        with open(self.__make_slot(), "wb") as f:
-            pickle.dump(Data.data, f)
+        print("SAVING")
+        if slot == "LOCAL":
+            with open("LOCAL", "wb") as f:
+                pickle.dump(self.data, f)
+        else:
+            with open(self.__make_slot(), "wb") as f:
+                pickle.dump(self.data, f)
 
-    def load(self):
+    def load(self, slot="LOCAL"):
         """
         [과제] 인자로 입력받은 게임데이터 파일을 읽어와 내부 딕셔너리에 저장.
         -> 현재 인스턴스
         """
-        with open(self.__get_slot(), "rb") as f:
-            Data.data = pickle.load(f)
-            return self
+        print("LOADING")
+        if slot == "LOCAL":
+            with open("LOCAL", "rb") as f:
+                self.data = pickle.load(f)
+                return self
+        else:
+            with open(self.__get_slot(), "rb") as f:
+                self.data = pickle.load(f)
+                return self
 
     def dump(self):
         """
         [과제] 저장하고 있는 게임정보 딕셔너리를 반환
         """
-        return Data.data
+        return self.data
 
     def get(self, target, whenfail=None):
         """
         인스턴트 자체를 딕셔너리처럼 이용하여 검색.
         예시: data = Data(); data.get("pos") -> (1,1)
         """
-        return Data.data.get(target, whenfail)
+        return self.data.get(target, whenfail)
 
     def get_random_movie(self):
         """
         [과제] 아직 잡지 않은 랜덤한 무비몬 반환
         """
-        return Data.data[""]
+        return self.data.get("not_yet_moviemons").choice()
 
     def load_default_settings(self):
         """
@@ -92,15 +103,14 @@ class Data:
         from django.conf import settings
 
         const = settings.CONSTANTS
-        Data.data = {
+        self.data = {
             "pos": const["PLAYER_INIT_POS"],
             "movieballs": const["PLATER_INIT_MOVIEBALLS"],
-            "not_yet_moviemons": [],
-            "my_moviemons": [],
             "map": [],
         }
 
         def __load_omdb():
+            print("LOADING FROM OMDB...")
             import requests
 
             for movieid in settings.IMDB_LIST:
@@ -116,14 +126,21 @@ class Data:
                     plot=data["Plot"],
                     actors=data["Actors"],
                 )
+            print("OMDB LIST TURNED OUT:", result)
             return result
 
         def __load_internal():
-            return {(k, Moviemon()) for k in settings.IMDB_ID_LIST}
+            result = dict()
+            for k in settings.IMDB_ID_LIST:
+                result[k] = Moviemon()
+            return result
 
+        # rint("WHY?????????????????\n\nn\n\n\n")
         func = __load_internal if settings.MOVIE_LOAD_INTERNAL else __load_omdb
         self.update("not_yet_moviemons", func())
-        # print("******MY DATA IS", Data.data, "********")
+        self.update("my_moviemons", func())
+        self.save(slot="LOCAL")
+        # print("******MY DATA IS", self.data, "********")
 
     def get_strength(self):
         """
@@ -131,12 +148,12 @@ class Data:
         """
         pass
 
-    def get_movie(self):
+    def get_movie(self, movie_id):
         """
         [과제] 무비몬 id를 입력받아 필요한 모든 정보를 반환
         """
-        pass
-        # return dicts
+        movmon = data.get("my_moviemons")
+        return movmon[movie_id].data
 
     def update(self, key: str, value, save: bool = True) -> None:
         """
@@ -144,7 +161,7 @@ class Data:
         저장을 끄고싶다면 (예:여러 수정 후 한번에 저장) save=False로 사용
         """
         try:
-            Data.data[key] = value
+            self.data[key] = value
         except Exception as e:
             raise Exception(f"key {key} caused Error {e}")
         if save:

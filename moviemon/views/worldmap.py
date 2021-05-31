@@ -9,7 +9,7 @@ from .engine.engine import Engine
 
 from moviemon.utils.data import Data
 
-worlddat = Data()
+data = Data()
 const = settings.CONSTANTS
 
 
@@ -19,8 +19,9 @@ class Worldmap(TemplateView):
             const["GRID_SIZE"],
             const["SCREEN_SIZE"],
             const["CAMOFFSET"],
-            worlddat.get("pos"),
+            data.get("pos"),
         )
+        print("HELLO")
 
     except Exception:
         print(
@@ -35,15 +36,21 @@ class Worldmap(TemplateView):
     # print(data.dump())
     # @loadSession_middleware
     def get(self, request):
+        data.load()
         # print(f"CONST IS {const} *******")
         key = Keys("worldmap", request.GET.get("key"))
-        print("**FROM**", request.GET.get("key"), "**KEY: **", key)
-        print("REQUEST.PATH:", request.path)
+        # print("**FROM**", request.GET.get("key"), "**KEY: **", key)
+        # for k, v in data.dump().items():
+        #     if k not in ["map", "not_yet_moviemons"]:
+        #         print(f"key:{k}, value:{v}")
+        # print("REQUEST.PATH:", request.path)
         self.context = {"engine": self.engine.render()}
         if key:
             if key.get("do") in ["move"]:
                 self.engine.move(*key.get("args"))
                 self.context = {"engine": self.engine.render()}
+                data.update("pos", (self.engine.px, self.engine.py))
+                data.update("map", self.engine.map, save=True)
                 return redirect(request.path)
             elif key.get("do") in ["redirect"]:
                 return redirect(key.get("args"))

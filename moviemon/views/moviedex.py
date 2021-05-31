@@ -2,9 +2,14 @@
 from django.shortcuts import redirect, render
 from django.views.generic import TemplateView
 
+from moviemon.utils.data import Data
+
 # from ..utils.game_data import load_session_data, GameData
 
+
 MoviedexState = {"posistion": 0}
+
+data = Data()
 
 
 class Moviedex(TemplateView):
@@ -13,9 +18,29 @@ class Moviedex(TemplateView):
 
     # @loadSession_middleware
     def get(self, request):
+        def now(setval=None, abso=False):
+            """
+            now() 를 입력하면... MoviedexState["posistion"]를 반환한다\n
+            now(값) 을 입력하면... MoviedexState["posistion"]에 값만큼 변동\n
+            now(값, True) 를 입력하면... MoviedexState["posistion"]에 값 대입
+            """
+            if setval and abso:
+                MoviedexState["posistion"] = setval
+            elif setval:
+                MoviedexState["posistion"] += setval
+            else:
+                return MoviedexState["posistion"]
+
         # game = GameData.load(load_session_data())
-        if MoviedexState["posistion"] >= len(game.captured_list):
-            MoviedexState["posistion"] = 0
+        mydict = data.get("my_moviemons")
+        mylst = [[k, v] for k, v in mydict.items()]
+
+        for k, v in mydict.items():
+            print(v)
+        # ["영화 id", "무비몬 인스턴스"] 로 구성된 리스트
+
+        if now() >= len(mylst):
+            now(0, True)
         key = request.GET.get("key", None)
         if key is not None:
             print(key)
@@ -24,15 +49,15 @@ class Moviedex(TemplateView):
             elif key == "down":
                 pass
             elif key == "left":
-                if MoviedexState["posistion"] > 0:
-                    MoviedexState["posistion"] -= 1
+                if now() > 0:
+                    now(-1)
             elif key == "right":
-                if MoviedexState["posistion"] < len(game.captured_list) - 1:
-                    MoviedexState["posistion"] += 1
+                if now() < len(mylst) - 1:
+                    now(1)
             if key == "a":
                 return redirect(
                     "moviedex_detail",
-                    # moviemon_id=game.captured_list[MoviedexState["posistion"]],
+                    moviemon_id=mylst[now()][0],
                 )
             elif key == "b":
                 return redirect("worldmap")
@@ -42,38 +67,38 @@ class Moviedex(TemplateView):
                 pass
             return redirect(request.path)
 
-        # self.context["movies"] = []
-        # if MoviedexState["posistion"] > 0:
-        #     #id = game.captured_list[MoviedexState["posistion"] - 1]
-        #     self.context["movies"].append(
-        #         {
-        #             #"poster": game.moviemon[id]["poster"],
-        #             "class": "moviedex-blur",
-        #         }
-        #     )
-        # if len(game.captured_list) > 0:
-        #     id = game.captured_list[MoviedexState["posistion"]]
-        #     self.context["movies"].append(
-        #         {
-        #             "poster": game.moviemon[id]["poster"],
-        #             "class": "moviedex-ative ",
-        #         }
-        #     )
-        # if MoviedexState["posistion"] < len(game.captured_list) - 1:
-        #     id = game.captured_list[MoviedexState["posistion"] + 1]
-        #     self.context["movies"].append(
-        #         {
-        #             "poster": game.moviemon[id]["poster"],
-        #             "class": "moviedex-blur",
-        #         }
-        #     )
-        # if MoviedexState["posistion"] == 0 and 1 < len(game.captured_list):
-        #     id = game.captured_list[2]
-        #     self.context["movies"].append(
-        #         {
-        #             "poster": game.moviemon[id]["poster"],
-        #             "class": "moviedex-blur",
-        #         }
-        #     )
+        self.context["movies"] = []
+        if now() > 0:
+            mov_id = mylst[now() - 1]
+            self.context["movies"].append(
+                {
+                    "poster": mydict[mov_id].poster,
+                    "class": "moviedex-blur",
+                }
+            )
+        if len(mylst) > 0:
+            mov_id = mylst[now()]
+            self.context["movies"].append(
+                {
+                    "poster": mydict[mov_id].poster,
+                    "class": "moviedex-ative ",
+                }
+            )
+        if now() < len(mylst) - 1:
+            mov_id = mylst[now() + 1]
+            self.context["movies"].append(
+                {
+                    "poster": mydict[mov_id].poster,
+                    "class": "moviedex-blur",
+                }
+            )
+        if now() == 0 and 1 < len(mylst):
+            mov_id = mylst[2]
+            self.context["movies"].append(
+                {
+                    "poster": mydict[mov_id].poster,
+                    "class": "moviedex-blur",
+                }
+            )
 
         return render(request, self.template_name, self.context)

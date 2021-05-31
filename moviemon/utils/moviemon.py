@@ -13,16 +13,18 @@ class Moviemon:
         무비몬의 모든 정보를 저장. 사용 방법:
         the_host = Moviemon(<영화 id>, <영화이름>("괴물"), <포스터 이미지 주소>, <평점>("4.5"))
         """
-        self.title = title
-        self.year = year
-        self.director = director
-        self.poster = poster
-        self.rating = rating
-        self.plot = plot
-        self.actors = actors
+        self.data = dict()
+        self.data["title"] = title
+        self.data["year"] = year
+        self.data["director"] = director
+        self.data["poster"] = poster
+        self.data["rating"] = rating
+        self.data["plot"] = plot
+        self.data["actors"] = actors
+        assert self.data
 
     def __str__(self):
-        return self.title  # 자기 이름 반환
+        return self.data.get("title")  # 자기 정보 반환
 
 
 if __name__ == "__main__":

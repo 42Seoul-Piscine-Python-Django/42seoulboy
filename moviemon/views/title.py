@@ -7,6 +7,10 @@ from .engine.engine import Engine
 
 from django.conf import settings
 
+from moviemon.utils.data import Data
+
+data = Data()
+
 
 class Title(TemplateView):
     template_name = "title.html"
@@ -17,6 +21,7 @@ class Title(TemplateView):
         print(f"*****{key}*********")
         if len(key):
             if key.get("do") in ["redirect"]:
+                data.load()
                 # save_session_data(GameData.load_default_settings().dump())
                 return redirect(key.get("args"))
             elif key.get("do") in ["load"]:
