@@ -90,14 +90,6 @@ class Data:
         def __load_omdb():
             import requests
 
-            self.data = {
-                "pos": (4, 4),
-                "movieballs": 0,
-                "not_yet_moviemons": [],
-                "my_moviemons": [],
-                "map_list": [],
-            }
-
             for movieid in settings.IMDB_LIST:
                 params = {"apikey": settings.OMDB_API_KEY, "i": movieid}
                 result = dict()
