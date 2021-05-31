@@ -15,6 +15,8 @@ class Moviedex(TemplateView):
     @loadSession_middleware
     def get(self, request):
         game = GameData.load(load_session_data())
+        if MoviedexState['posistion'] >= len(game.captured_list):
+            MoviedexState['posistion'] = 0
         key = request.GET.get('key', None)
         if (key is not None):
             print(key)
@@ -29,7 +31,7 @@ class Moviedex(TemplateView):
                 if (MoviedexState['posistion'] < len(game.captured_list) - 1):
                     MoviedexState['posistion'] += 1
             if (key == 'a'):
-                pass
+                return redirect('moviedex_detail', moviemon_id=game.captured_list[MoviedexState['posistion']])
             elif (key == 'b'):
                 return redirect('worldmap')
             elif (key == 'start'):
@@ -39,7 +41,6 @@ class Moviedex(TemplateView):
             return redirect(request.path)
 
         self.context['movies'] = []
-
         if (MoviedexState['posistion'] > 0):
             id = game.captured_list[MoviedexState['posistion'] - 1]
             self.context['movies'].append({

@@ -1,8 +1,18 @@
 {% extends 'base.html' %} {% block title %}
-<title>{{ moviemon_id }} | MOVIEDEX | MOVIEMON</title>
+<title>{{ title }} | MOVIEDEX | MOVIEMON</title>
 {% endblock title %} {% block content %}
-<div class="">
-  <h1>moviedex detail</h1>
-  {{ moviemon_id }}
+<div class="moviedex-detail-container">
+  <img class="moviedex-detail-image" src="{{ poster }}" />
+  <div class="moviedex-detail-info">
+    <p>title : {{ title }}</p>
+    <p>year : {{ year }}</p>
+    <p>director : {{ director }}</p>
+    <p>rating : {{ rating }}</p>
+    <p>actors</p>
+    <div>{{ actors }}</div>
+    <p>plot</p>
+    <div>{{ plot }}</div>
+    <div class="moviedex-button">B - Back To Moviedex</div>
+  </div>
 </div>
 {% endblock content %}
