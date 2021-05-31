@@ -1,17 +1,16 @@
 from django.conf import settings
-from camera import Camera
-from moviemon import Moviemon
+from .camera import Camera
+from .moviemon import Moviemon
 
 
 class Engine:
-    def __init__(self, pos, screen, offset):
+    def __init__(self, pos, screen, offset, playerpos):
         # Data.load(SAVENAME)
         self.width, self.height = pos
         self.map = [
             [Tile() for _ in range(self.width)] for _ in range(self.height)
         ]
-        self.px = 4
-        self.py = 4
+        self.px, self.py = playerpos
         self.camera = Camera(screen, offset)
 
     def info(self):
@@ -49,14 +48,31 @@ class Engine:
         """
         새 2차원 배열에 객체들을 그래픽 처리해 추가하여 반환.
         """
+        lines = []
+        for y in range(self.height):
+            l = ""
+            for x in range(self.width):
+                if (self.py, self.px) == (y, x):
+                    l += "@"
+                elif self.map[y][x].content:
+                    l += "_"
+                else:
+                    l += "X"
+            lines.append(l)
+        pre_render = lines
+        for l in pre_render:
+            print(l)
 
         def cut_to_screen():
             """
             화면을 스크린 크기에 맞춰 잘라 반환
             """
-            return self.camera.render(self.map, self.px, self.py)
+            return self.camera.render(pre_render, self.px, self.py)
 
         return cut_to_screen()
+
+    def add(self, pos, content):
+        self.map[pos[0]][pos[1]].append(content)
 
 
 class Tile:
@@ -74,7 +90,7 @@ if __name__ == "__main__":
     """
 
     engine = Engine((10, 10), (6, 6), (-3, -3))
-    engine.map[2][3].content.append(Moviemon("123456"))
+    engine.add((2, 3), Moviemon("123456"))
     import sys
 
     engine.info()
