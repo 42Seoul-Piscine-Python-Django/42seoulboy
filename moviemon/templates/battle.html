@@ -2,9 +2,23 @@
 <title>BATTLE | MOVIEMON</title>
 {% endblock title %} {% block content %}
 <div class="battle_scene">
-  <div class="movie_name">{{ moviemon_id }}</div>
-  <div class="movie_strength">LV 4.5</div>
-  <div class="battle_poster"></div>
-  <div class="battle_text">야생의 {{ moviemon_id }}를 만났다.</div>
+  <div class="battle_movie_name">{{ movie_title }}</div>
+  <div class="battle_movie_strength">LV {{movie_rating}}</div>
+  <img class="battle_poster" src="{{ movie_poster }}"></img>
+  <div class="battle_movie_ball"> ✖ {{pocketball_number}}</div>
+  <div class="battle_user_power"> LV {{user_rating}}</div>
+  <div class="battle_text">{{ user_text }}</div>
+  <!-- <div class="battle_text_second_line">🅰 (╯°□°)╯︵◓   🅱 Run</div> -->
+  <div class="battle_text_second_line">🅰 Use Movie Ball   🅱 Run</div>
 </div>
 {% endblock content %}
+
+
+<!-- <div class="battle_movie_name">{{ moviemon_id }}</div>
+<div class="battle_movie_strength">LV 4.5</div>
+<div class="battle_poster"></div>
+<div class="battle_movie_ball"> ✖ 15</div>
+<div class="battle_user_power"> LV 4.5</div>
+<div class="battle_text">Wild {{ moviemon_id }} appeared.</div>
+<div class="battle_text_second_line">🅰 (╯°□°)╯︵◓   🅱 Run</div>
+<div class="battle_text_second_line">🅰 Use Movie Ball   🅱 Run</div> -->
