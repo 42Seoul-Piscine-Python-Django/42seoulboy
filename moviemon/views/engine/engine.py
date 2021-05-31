@@ -4,12 +4,19 @@ from moviemon.utils.moviemon import Moviemon
 
 
 class Engine:
-    def __init__(self, pos, screen, offset, playerpos):
+    """
+    여러... 인자들을 받아 저장후 입력을 받아 계산값 반환
+    """
+
+    def __init__(self, size, screen, offset, playerpos, premap=None):
         # Data.load(SAVENAME)
-        self.width, self.height = pos
-        self.map = [
-            [Tile() for _ in range(self.width)] for _ in range(self.height)
-        ]
+        self.width, self.height = size
+        if premap:
+            self.map = premap
+        else:
+            self.map = [
+                [Tile() for _ in range(self.width)] for _ in range(self.height)
+            ]
         self.px, self.py = playerpos
         self.camera = Camera(screen, offset)
 

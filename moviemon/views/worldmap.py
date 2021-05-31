@@ -7,38 +7,43 @@ from django.conf import settings
 from .engine.keyhandler import Keys
 from .engine.engine import Engine
 
-position = {"x": 0, "y": 0}
+from moviemon.utils.data import Data
+
+worlddat = Data()
+const = settings.CONSTANTS
 
 
 class Worldmap(TemplateView):
-    template_name = "worldmap.html"
+    try:
+        engine = Engine(
+            const["GRID_SIZE"],
+            const["SCREEN_SIZE"],
+            const["CAMOFFSET"],
+            worlddat.get("pos"),
+        )
 
+    except Exception:
+        print(
+            "****** WARNING COULD NOT IMPORT SETTINGS FROM DJANGO.CONF: "
+            "RUNNING AS COMPAITABILITY MODE ******"
+        )
+        engine = Engine(
+            const["GRID_SIZE"], const["SCREEN_SIZE"], const["CAMOFFSET"], (5, 5)
+        )
+
+    template_name = "worldmap.html"
+    # print(data.dump())
     # @loadSession_middleware
     def get(self, request):
-        const = settings.CONSTANTS
-        print(f"CONST IS {const} *******")
-        try:
-            engine = Engine(
-                const["GRID_SIZE"],
-                const["SCREEN_SIZE"],
-                const["CAMOFFSET"],
-                const["PLAYER_INIT_POS"],
-            )
-        except TypeError:
-            print(
-                "****** WARNING COULD NOT IMPORT SETTINGS FROM DJANGO.CONF: "
-                "RUNNING AS COMPAITABILITY MODE ******"
-            )
-            engine = Engine((10, 10), (6, 6), (-3, -3))
-
+        # print(f"CONST IS {const} *******")
         key = Keys("worldmap", request.GET.get("key"))
         print("**FROM**", request.GET.get("key"), "**KEY: **", key)
         print("REQUEST.PATH:", request.path)
-        self.context = {"engine": engine.render()}
+        self.context = {"engine": self.engine.render()}
         if key:
             if key.get("do") in ["move"]:
-                engine.move(*key.get("args"))
-                self.context = {"engine": engine.render()}
+                self.engine.move(*key.get("args"))
+                self.context = {"engine": self.engine.render()}
                 return redirect(request.path)
             elif key.get("do") in ["redirect"]:
                 return redirect(key.get("args"))

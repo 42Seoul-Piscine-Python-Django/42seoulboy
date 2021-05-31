@@ -3,6 +3,9 @@ from django.shortcuts import redirect, render
 from django.views.generic import TemplateView
 
 from .engine.keyhandler import Keys
+from .engine.engine import Engine
+
+from django.conf import settings
 
 
 class Title(TemplateView):

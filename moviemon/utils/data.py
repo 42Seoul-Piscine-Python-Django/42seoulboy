@@ -1,48 +1,45 @@
 import pickle
 import random
-from django.conf import settings
 from pathlib import Path
+
+from .moviemon import Moviemon
+
+current_slot = "LOCAL"
 
 
 class Data:
-    def __init__(self, slot: str = None, data: dict = None):
+    def __init__(self, data: dict = None):
         """
-        A,B,C 슬롯 중 하나 명시. 파일이 존재하지 않으면 자동으로 생성해줌.
+        데이터 딕셔너리를 명시하면 덮어씌워줌.
         데이터 구조: (접근법: dump() 또는 data.get("my_moviemons"))
             not_yet_moviemons: 아직 잡지 않은 무비몬 목록
             my_moviemons: 내가 잡은 무비몬 목록
+            map: 지도
+            movieballs: 무비볼 수
             pos: 플레이어 위치
         함수 목록:
             save, load, load_default_settings
             dump, get
-
         """
-        assert type(slot) is str and slot in [
-            "A",
-            "B",
-            "C",
-        ], "슬롯 인자는 대문자로 A,B,C 슬롯 중 하나여야함!"
-        self.slot = slot
+
+        self.slot = current_slot  # A, B, C 중 하나
         if data:
             self.data = data
+        elif self.slot == "LOCAL":
+            self.data = self.load_default_settings()
         else:
-            try:
-                self.data = self.load()
-            except Exception as e:
-                self.data = self.load_default_settings()
+            self.data = self.load()
 
-    def __get_slot(self):
+    def __make_slot(self):
+        # print("\n\n\nCURRENT SLOT:", self.slot)
         n = self.slot.lower()
-        try:
-            sc = self.data.get("my_moviemons")
-            tot = self.data.get("not_yet_moviemons")
-            score = f"{sc}_{sc + tot}"
-            return f"slot{n}_{score}.mmg"
-        except Exception as e:
-            return f"slot{n}_0_9999.mmg"
+        sc = len(self.data.get("my_moviemons"))
+        tot = len(self.data.get("not_yet_moviemons"))
+        score = f"{sc}_{sc + tot}"
+        return f"slot{n}_{score}.mmg"
 
-    def save(self):
-        with open(self.__get_slot(), "wb") as f:
+    def save(self, slot="LOCAL"):
+        with open(self.__make_slot(), "wb") as f:
             pickle.dump(self.data, f)
 
     def load(self):
@@ -79,9 +76,27 @@ class Data:
         settings/moviemon.py의 MOVIE_LOAD_INTERNAL로 API 사용 여부 결정
         -> 현재 인스턴스
         """
+        from django.conf import settings
+
+        const = settings.CONSTANTS
+        self.data = {
+            "pos": const["PLAYER_INIT_POS"],
+            "movieballs": const["PLATER_INIT_MOVIEBALLS"],
+            "not_yet_moviemons": [],
+            "my_moviemons": [],
+            "map": [],
+        }
 
         def __load_omdb():
             import requests
+
+            self.data = {
+                "pos": (4, 4),
+                "movieballs": 0,
+                "not_yet_moviemons": [],
+                "my_moviemons": [],
+                "map_list": [],
+            }
 
             for movieid in settings.IMDB_LIST:
                 params = {"apikey": settings.OMDB_API_KEY, "i": movieid}
@@ -103,6 +118,7 @@ class Data:
 
         func = __load_internal if settings.MOVIE_LOAD_INTERNAL else __load_omdb
         self.update("not_yet_moviemons", func())
+        # print("******MY DATA IS", self.data, "********")
 
     def get_strength(self):
         """
@@ -122,7 +138,10 @@ class Data:
         단일 key-value쌍 수정. 수정과 동시에 저장함.
         저장을 끄고싶다면 (예:여러 수정 후 한번에 저장) save=False로 사용
         """
-        self.data[key] = value
+        try:
+            self.data[key] = value
+        except Exception as e:
+            raise Exception(f"key {key} caused Error {e}")
         if save:
             self.save()
 
