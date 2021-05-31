@@ -1,7 +1,21 @@
 {% extends 'base.html' %} {% block title %}
 <title>WORLDMAP | MOVIEMON</title>
 {% endblock title %} {% block content %}
-<div class="">
-  <h1>worldmap</h1>
+<div class="worldmap-container">
+  <table>
+    {% for y in engine %}
+    <tr>
+      {% for x in y %}
+        <td>
+          {% if x == "@" %}
+            @
+          {% else %}
+            {{x}}
+          {% endif %}
+        </td>
+      {% endfor %}
+    </tr>
+    {% endfor %}
+  </table>
 </div>
 {% endblock content %}

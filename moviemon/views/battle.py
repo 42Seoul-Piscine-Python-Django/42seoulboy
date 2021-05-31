@@ -1,4 +1,4 @@
-from moviemon.middleware.loadSessionMiddleware import loadSession_middleware
+# from moviemon.middleware.loadSessionMiddleware import loadSession_middleware
 from django.shortcuts import redirect, render
 from django.views.generic import TemplateView
 from ..utils.game_data import load_session_data, GameData, save_session_data
@@ -67,9 +67,9 @@ class Battle(TemplateView):
             elif (key == 'b'):
                 # redirect(self.get(request, moviemon_id, 'b'))
                 pass
-            elif (key == 'start'):
+            elif key == "start":
                 pass
-            elif (key == 'select'):
+            elif key == "select":
                 pass
             return redirect(request.path)
 

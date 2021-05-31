@@ -1,6 +1,8 @@
 # Created by https://www.toptal.com/developers/gitignore/api/macos,windows,linux,python,django
 # Edit at https://www.toptal.com/developers/gitignore?templates=macos,windows,linux,python,django
 
+### saves ###
+slot*.mmg
 ### Django ###
 *.log
 *.pot
