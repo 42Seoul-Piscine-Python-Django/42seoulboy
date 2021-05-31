@@ -1,33 +1,18 @@
-from data import Data
+from django.conf import settings
 from camera import Camera
 from moviemon import Moviemon
-from tempconst import *  # noqa
 
 
 class Engine:
-    def __init__(
-        self,
-        width,
-        height,
-        screen_width,
-        screen_height,
-        offset_x,
-        offset_y,
-    ):
+    def __init__(self, pos, screen, offset):
         # Data.load(SAVENAME)
-        self.width = width
-        self.height = height
+        self.width, self.height = pos
         self.map = [
             [Tile() for _ in range(self.width)] for _ in range(self.height)
         ]
         self.px = 4
         self.py = 4
-        self.camera = Camera(
-            screen_width,
-            screen_height,
-            offset_x,
-            offset_y,
-        )
+        self.camera = Camera(screen, offset)
 
     def info(self):
         """
@@ -65,7 +50,7 @@ class Engine:
         새 2차원 배열에 객체들을 그래픽 처리해 추가하여 반환.
         """
 
-        def cut_to_screen(self):
+        def cut_to_screen():
             """
             화면을 스크린 크기에 맞춰 잘라 반환
             """
@@ -87,9 +72,8 @@ if __name__ == "__main__":
     """
     엔진 쇼케이스: wasd로 이동, q/x 로 종료.
     """
-    engine = Engine(
-        WIDTH, HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT, CAMOFFSET_X, CAMOFFSET_Y
-    )
+
+    engine = Engine((10, 10), (6, 6), (-3, -3))
     engine.map[2][3].content.append(Moviemon("123456"))
     import sys
 

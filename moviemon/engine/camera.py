@@ -6,17 +6,9 @@ class Camera:
     주어진 지도의 일부분을 렌더링하는 클래스 (단일)
     """
 
-    def __init__(
-        self,
-        width,
-        height,
-        offset_x,
-        offset_y,
-    ):
-        self.width = width
-        self.height = height
-        self.offset_x = offset_x
-        self.offset_y = offset_y
+    def __init__(self, size, offset):
+        self.width, self.height = size
+        self.offset_x, self.offset_y = offset
 
     def render(self, map, x, y):
         """
@@ -24,33 +16,22 @@ class Camera:
         이 함수를 마지막으로 호출하고 반환값을 최종 화면 결과물로 웹서버에 보내야 함.
         결과물로 나온 화면 일부를 후처리할수도 있지만 좌표 계산이 워낙 어려운 관계로 권장하지 않음.
         """
-        global debug
-        try:
-            if debug:
-                pass
-        except Exception as e:
-            debug = False
-
         width, height = len(map[0]), len(map)
-        # print(f"orginal start: x:{px} y:{py}")
-        # print("width:", width, "height:", height)
+
         px = clip(x + self.offset_x, (0, width - self.width))
         py = clip(y + self.offset_y, (0, height - self.height))
 
-        # print(f"adjusted pos: x:{px} y:{py}")
-        if debug:
-            map[y][x] = 9
         screen = [[0] * self.width for _ in range(self.height)]
+
         for sy, j in enumerate(range(py, py + self.height)):
             for sx, i in enumerate(range(px, px + self.width)):
-                if debug and map[j][i] != 9:
-                    map[j][i] = 1
                 screen[sy][sx] = map[j][i]
+
         return screen
 
 
 if __name__ == "__main__":
-    testcam = Camera(5, 5, -2, -1)
+    testcam = Camera((5, 5), (-2, -2))
 
     import sys
 

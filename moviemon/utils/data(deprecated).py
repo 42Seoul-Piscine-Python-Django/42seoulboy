@@ -20,19 +20,6 @@ class Data:
         except Exception as e:
             print(f"exeption {e}!")
 
-    def get_random_movie():
-        pass
-
-    def load_default_settings():
-        pass
-
-    def get_strength():
-        pass
-
-    def get_movie():
-        pass
-        # return dicts
-
 
 if __name__ == "__main__":
     from moviemon import Moviemon
