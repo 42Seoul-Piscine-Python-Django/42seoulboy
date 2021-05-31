@@ -1,0 +1,89 @@
+#btn-up {
+    background-color: rgba(0, 0, 0, 0);
+    position: absolute;
+    width: 5vh;
+    height: 6.5vh;
+    top: 58.5vh;
+    left: 10.3vh;
+    border-radius: 10px;
+    border-bottom-right-radius: 50px;
+    border-bottom-left-radius: 50px;
+  }
+
+  #btn-down {
+    background-color: rgba(0, 0, 0, 0);
+    position: absolute;
+    width: 5vh;
+    height: 6.5vh;
+    top: 67vh;
+    left: 10.3vh;
+    border-radius: 10px;
+    border-top-right-radius: 50px;
+    border-top-left-radius: 50px;
+  }
+
+  #btn-left {
+    background-color: rgba(0, 0, 0, 0);
+    position: absolute;
+    width: 6.5vh;
+    height: 5vh;
+    top: 63.5vh;
+    left: 5.5vh;
+    border-radius: 10px;
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+  }
+
+  #btn-right {
+    background-color: rgba(0, 0, 0, 0);
+    position: absolute;
+    width: 6.5vh;
+    height: 5vh;
+    top: 63.5vh;
+    left: 13.5vh;
+    border-radius: 10px;
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+  }
+
+  #btn-a {
+    background-color: rgba(0, 0, 0, 0);
+    position: absolute;
+    width: 7vh;
+    height: 7vh;
+    top: 59.6vh;
+    left: 47.1vh;
+    border-radius: 50vh;
+  }
+
+  #btn-b {
+    background-color: rgba(0, 0, 0, 0);
+    position: absolute;
+    width: 7vh;
+    height: 7vh;
+    top: 64vh;
+    left: 37.7vh;
+    border-radius: 50vh;
+  }
+
+  #btn-select {
+    background-color: rgba(0, 0, 0, 0);
+    position: absolute;
+    transform: rotate(155deg);
+    width: 8vh;
+    height: 1.5vh;
+    bottom: 17vh;
+    left: 18vh;
+    border-radius: 50vh;
+  }
+
+  #btn-start {
+    background-color: rgba(0, 0, 0, 0);
+    position: absolute;
+    transform: rotate(155deg);
+    width: 8vh;
+    height: 1.5vh;
+    bottom: 17vh;
+    left: 28vh;
+    border-radius: 50vh;
+  }
