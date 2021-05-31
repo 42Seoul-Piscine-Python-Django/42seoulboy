@@ -59,38 +59,38 @@ class GameData():
         result = GameData()
         URL = "http://www.omdbapi.com/"
 
-        f = open("test.json", 'r')
-        data = json.load(f)
-        f.close()
+        # f = open("test.json", 'r')
+        # data = json.load(f)
+        # f.close()
 
-        for key, value in data.items():
-            result.captured_list.append(key)
-            result.moviemon[key] = {
-                "title": value["Title"],
-                "year": value["Year"],
-                "director": value["Director"],
-                "poster": value["Poster"],
-                "rating": float(value["imdbRating"]),
-                "plot": value["Plot"],
-                "actors": value["Actors"],
-            }
-
-        # for id in settings.IMDB_LIST:
-        #     params = {
-        #         "apikey": settings.OMDB_API_KEY,
-        #         "i": id
+        # for key, value in data.items():
+        #     result.captured_list.append(key)
+        #     result.moviemon[key] = {
+        #         "title": value["Title"],
+        #         "year": value["Year"],
+        #         "director": value["Director"],
+        #         "poster": value["Poster"],
+        #         "rating": float(value["imdbRating"]),
+        #         "plot": value["Plot"],
+        #         "actors": value["Actors"],
         #     }
-        #     try:
-        #         data = requests.get(URL, params=params).json()
-        #         result.moviemon[id] = {
-        #             "title": data["Title"],
-        #             "year": data["Year"],
-        #             "director": data["Director"],
-        #             "poster": data["Poster"],
-        #             "rating": float(data["imdbRating"]),
-        #             "plot": data["Plot"],
-        #             "actors": data["Actors"],
-        #         }
-        #     except Exception as e:
-        #         assert e
+
+        for id in settings.IMDB_LIST:
+            params = {
+                "apikey": settings.OMDB_API_KEY,
+                "i": id
+            }
+            try:
+                data = requests.get(URL, params=params).json()
+                result.moviemon[id] = {
+                    "title": data["Title"],
+                    "year": data["Year"],
+                    "director": data["Director"],
+                    "poster": data["Poster"],
+                    "rating": float(data["imdbRating"]),
+                    "plot": data["Plot"],
+                    "actors": data["Actors"],
+                }
+            except Exception as e:
+                assert e
         return result
