@@ -25,14 +25,16 @@ def load_session_data():
         return None
 
 
-class GameData():
+class GameData:
     px: int = settings.PLAYER_INIT_POSITION[0]
     py: int = settings.PLAYER_INIT_POSITION[1]
     captured_list: List[str] = []
     moviemon: Dict[str, Dict[str, str]] = {}
     mapsize: Tuple[int, int] = settings.GRID_SIZE
     map: List[List[int]] = [
-        [0 for _ in range(settings.GRID_SIZE[1])] for _ in range(settings.GRID_SIZE[0])]
+        [0 for _ in range(settings.GRID_SIZE[1])]
+        for _ in range(settings.GRID_SIZE[0])
+    ]
     movieballCount: int = settings.GRID_SIZE[0] * settings.GRID_SIZE[1] / 10
 
     def dump(self):
@@ -55,42 +57,56 @@ class GameData():
         result.map = data["map"]
         return result
 
+    def get_random_movie():
+        # TODO
+        pass
+
+    def load_default_settings():
+        # TODO
+        pass
+
+    def get_strength():
+        # TODO
+        pass
+
+    def get_movie():
+        # TODO
+        pass
+        # return dicts
+
     def load_default_settings():
         result = GameData()
         URL = "http://www.omdbapi.com/"
 
-        f = open("test.json", 'r')
-        data = json.load(f)
-        f.close()
+        # f = open("test.json", 'r')
+        # data = json.load(f)
+        # f.close()
 
-        for key, value in data.items():
-            result.captured_list.append(key)
-            result.moviemon[key] = {
-                "title": value["Title"],
-                "year": value["Year"],
-                "director": value["Director"],
-                "poster": value["Poster"],
-                "rating": float(value["imdbRating"]),
-                "plot": value["Plot"],
-                "actors": value["Actors"],
-            }
+        # for key, value in data.items():
+        #     result.captured_list.append(key)
+        #     result.moviemon[key] = {
+        #         "title": value["Title"],
+        #         "year": value["Year"],
+        #         "director": value["Director"],
+        #         "poster": value["Poster"],
+        #         "rating": float(value["imdbRating"]),
+        #         "plot": value["Plot"],
+        #         "actors": value["Actors"],
+        # }
 
-        # for id in settings.IMDB_LIST:
-        #     params = {
-        #         "apikey": settings.OMDB_API_KEY,
-        #         "i": id
-        #     }
-        #     try:
-        #         data = requests.get(URL, params=params).json()
-        #         result.moviemon[id] = {
-        #             "title": data["Title"],
-        #             "year": data["Year"],
-        #             "director": data["Director"],
-        #             "poster": data["Poster"],
-        #             "rating": float(data["imdbRating"]),
-        #             "plot": data["Plot"],
-        #             "actors": data["Actors"],
-        #         }
-        #     except Exception as e:
-        #         assert e
+        for id in settings.IMDB_LIST:
+            params = {"apikey": settings.OMDB_API_KEY, "i": id}
+            try:
+                data = requests.get(URL, params=params).json()
+                result.moviemon[id] = {
+                    "title": data["Title"],
+                    "year": data["Year"],
+                    "director": data["Director"],
+                    "poster": data["Poster"],
+                    "rating": float(data["imdbRating"]),
+                    "plot": data["Plot"],
+                    "actors": data["Actors"],
+                }
+            except Exception as e:
+                assert e
         return result
