@@ -44,18 +44,23 @@ class Worldmap(TemplateView):
         #     if k not in ["map", "not_yet_moviemons"]:
         #         print(f"key:{k}, value:{v}")
         # print("REQUEST.PATH:", request.path)
-        self.context = {"engine": self.engine.render()}
+        self.context = {
+            "engine": self.engine.render(),
+            "movieballs": data.get("movieballs"),
+        }
+
         if key:
             if key.get("do") in ["move"]:
                 self.engine.move(*key.get("args"))
                 self.context = {"engine": self.engine.render()}
+                self.engine.collisioncheck(data)
                 data.update("pos", (self.engine.px, self.engine.py))
                 data.update("map", self.engine.map, save=True)
                 return redirect(request.path)
+            elif key.get("args") in ["battle"]:
+                return redirect("/worldmap")
             elif key.get("do") in ["redirect"]:
                 return redirect(key.get("args"))
-            elif key.get("do") in ["battle"]:
-                pass
             return redirect(request.path)
 
         return render(request, self.template_name, self.context)

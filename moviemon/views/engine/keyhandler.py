@@ -10,9 +10,11 @@ class Keys:
             "down": {"do": "move", "args": (0, 1)},
             "left": {"do": "move", "args": (-1, 0)},
             "right": {"do": "move", "args": (1, 0)},
-            "a": {"do": "redirect", "args": "battle"},
             "start": {"do": "redirect", "args": "option"},
             "select": {"do": "redirect", "args": "moviedex"},
+        },
+        "before_battle": {
+            "a": {"do": "battle"},
         },
         "battle": {},
         "moviedex": {},

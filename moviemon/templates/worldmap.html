@@ -1,14 +1,23 @@
-{% extends 'base.html' %} {% block title %}
+{% extends 'base.html' %}
+
+{% block title %}
 <title>WORLDMAP | MOVIEMON</title>
-{% endblock title %} {% block content %}
+{% endblock title %}
+
+{% block content %}
 <div class="worldmap-container">
+  <p>movieballs: {{movieballs}}</p>
   <table>
     {% for y in engine %}
     <tr>
       {% for x in y %}
-        <td>
+        <td style="background-color: rgb(238,  238, 238); width:10%; height:10%; text-align:center;">
           {% if x == "@" %}
             @
+          {% elif x == "movieball" %}
+            ?
+          {% elif x == "moviemon" %}
+            ?
           {% else %}
             {{x}}
           {% endif %}

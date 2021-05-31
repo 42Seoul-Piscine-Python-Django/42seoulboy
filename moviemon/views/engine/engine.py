@@ -1,6 +1,12 @@
 from django.conf import settings
-from .camera import Camera
+
 from moviemon.utils.moviemon import Moviemon
+from moviemon.utils.data import Data
+from moviemon.views.battle import battleState
+
+from .map import Tile
+from .map import init_map
+from .camera import Camera
 
 
 class Engine:
@@ -14,14 +20,9 @@ class Engine:
         if premap:
             self.map = premap
         else:
-            self.map = [
-                [Tile() for _ in range(self.width)] for _ in range(self.height)
-            ]
+            self.map = init_map(self.width, self.height)
         self.px, self.py = playerpos
         self.camera = Camera(screen, offset)
-
-    def add_to_tile(self, x, y, obj):
-        self.map[x][y]
 
     def move(self, x, y):
         if 0 <= self.px + x <= self.width - 1:
@@ -36,7 +37,11 @@ class Engine:
     def render(self):
         """
         새 2차원 배열에 객체들을 그래픽 처리해 추가하여 반환.
+        즉 2차원 배열 + 값들(1차원) = 3차원 배열(?!)
+
         """
+        # return self.camera.render(self.map, self.px, self.py)
+
         lines = []
         for y in range(self.height):
             l = ""
@@ -63,14 +68,23 @@ class Engine:
     def add(self, pos, content):
         self.map[pos[0]][pos[1]].append(content)
 
+    def __coll(self, target):
+        if self.map[self.py][self.px].content == target:
+            self.map[self.py][self.px].content = ""
+            return True
 
-class Tile:
-    def __init__(self, content: list = [], visited=False):
-        self.content = [c for c in content]
-        self.visited = visited
+    def collisioncheck(self, data: Data):
+        if self.__coll("movieball"):
+            data.add("movieballs", 1)
 
-    def __str__(self):
-        return " ".join([str(i) for i in self.content])
+        # if self.__coll("moviemon"):
+        #     battleState = await
+        # if self.map[self.py][self.px].content == "movieball":
+        #     self.map[self.py][self.px].content = ""
+        #     data.add("movieballs", 1)
+
+        if self.map[self.py][self.px].content == "moviemon":
+            self.map[self.py][self.px].content = ""
 
 
 if __name__ == "__main__":

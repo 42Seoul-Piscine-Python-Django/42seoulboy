@@ -19,21 +19,22 @@ class Data:
         return cls._instance  # Foo._instance를 리턴
 
     def __init__(self, data: dict = None):
+        """
+        데이터 딕셔너리를 명시하면 덮어씌워줌.
+        데이터 구조: (접근법: dump() 또는 data.get("my_moviemons"))
+            not_yet_moviemons: 아직 잡지 않은 무비몬 목록
+            my_moviemons: 내가 잡은 무비몬 목록
+            map: 지도
+            movieballs: 무비볼 수
+            pos: 플레이어 위치
+            battle_id: 현재 조우한 무비몬
+        함수 목록:
+            save, load, load_default_settings
+            dump, get
+        """
         cls = type(self)
         if not hasattr(cls, "_init"):  # init은 한 번만 실행됨
             cls._init = True
-            """
-            데이터 딕셔너리를 명시하면 덮어씌워줌.
-            데이터 구조: (접근법: dump() 또는 data.get("my_moviemons"))
-                not_yet_moviemons: 아직 잡지 않은 무비몬 목록
-                my_moviemons: 내가 잡은 무비몬 목록
-                map: 지도
-                movieballs: 무비볼 수
-                pos: 플레이어 위치
-            함수 목록:
-                save, load, load_default_settings
-                dump, get
-            """
 
             self.slot = current_slot  # A, B, C 중 하나
             if data:
@@ -142,7 +143,7 @@ class Data:
         # rint("WHY?????????????????\n\nn\n\n\n")
         func = __load_internal if settings.MOVIE_LOAD_INTERNAL else __load_omdb
         self.update("not_yet_moviemons", func())
-        self.update("my_moviemons", func())
+        # self.update("my_moviemons", func())
         self.save(slot="LOCAL")
         # print("******MY DATA IS", self.data, "********")
 
@@ -159,7 +160,7 @@ class Data:
         movmon = self.get("my_moviemons")
         return movmon[movie_id].data
 
-    def update(self, key: str, value, save: bool = True) -> None:
+    def update(self, key: str, value, save: bool = True):
         """
         단일 key-value쌍 수정. 수정과 동시에 저장함.
         저장을 끄고싶다면 (예:여러 수정 후 한번에 저장) save=False로 사용
@@ -170,6 +171,12 @@ class Data:
             raise Exception(f"key {key} caused Error {e}")
         if save:
             self.save()
+
+    def add(self, key: str, value):
+        """
+        숫자 추가!
+        """
+        self.update(key, self.data[key] + value)
 
 
 if __name__ == "__main__":
