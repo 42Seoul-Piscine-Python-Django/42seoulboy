@@ -1,6 +1,5 @@
-from project.settings.constants import SCREEN_SIZE
-from moviemon.utils.game_data import GameData, load_session_data
-from moviemon.middleware.loadSessionMiddleware import loadSession_middleware
+# from moviemon.utils.game_data import GameData, load_session_data
+# from moviemon.middleware.loadSessionMiddleware import loadSession_middleware
 from django.shortcuts import redirect, render
 from django.views.generic import TemplateView
 from django.conf import settings
@@ -14,16 +13,16 @@ position = {"x": 0, "y": 0}
 class Worldmap(TemplateView):
     template_name = "worldmap.html"
 
-    print(SCREEN_SIZE)
-
-    @loadSession_middleware
+    # @loadSession_middleware
     def get(self, request):
+        const = settings.CONSTANTS
+        print(f"CONST IS {const} *******")
         try:
             engine = Engine(
-                settings.GRID_SIZE,
-                settings.SCREEN_SIZE,
-                settings.CAMOFFSET,
-                settings.PLAYER_INIT_POSITION,
+                const["GRID_SIZE"],
+                const["SCREEN_SIZE"],
+                const["CAMOFFSET"],
+                const["PLAYER_INIT_POS"],
             )
         except TypeError:
             print(

@@ -1,6 +1,6 @@
 from django.conf import settings
 from .camera import Camera
-from .moviemon import Moviemon
+from moviemon.utils.moviemon import Moviemon
 
 
 class Engine:

@@ -1,4 +1,4 @@
-from moviemon.utils.game_data import GameData, save_session_data
+# from moviemon.utils.game_data import GameData, save_session_data
 from django.shortcuts import redirect, render
 from django.views.generic import TemplateView
 

@@ -1,4 +1,4 @@
-from moviemon.middleware.loadSessionMiddleware import loadSession_middleware
+# from moviemon.middleware.loadSessionMiddleware import loadSession_middleware
 from django.shortcuts import redirect, render
 from django.views.generic import TemplateView
 
@@ -9,7 +9,7 @@ class Battle(TemplateView):
     template_name = "battle.html"
     context = {}
 
-    @loadSession_middleware
+    # @loadSession_middleware
     def get(self, request, moviemon_id):
         self.context["moviemon_id"] = moviemon_id
         """
