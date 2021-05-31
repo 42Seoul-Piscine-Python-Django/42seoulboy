@@ -32,12 +32,11 @@
       .content {
         width: 50vh;
         height: calc(0.75 * 50vh);
-        background-color: black;
+        background-color: transparent;
         position: absolute;
         border-radius: 25px;
-        top: 9vh;
+        top: 8.75vh;
         left: 5vh;
-        color: white;
       }
       #btn-up {
         background-color: rgba(0, 0, 0, 0);
@@ -91,6 +90,10 @@
         top: 59.6vh;
         left: 47.1vh;
         border-radius: 50vh;
+        box-shadow: inset 1px 1px 10px 1px  rgb(141, 56, 101), 1px 1px 10px 1px rgb(42,42,42);
+      }
+      #btn-a:hover {
+        box-shadow: inset 1px 1px 10px 1px black, 1px 1px 10px 1px rgb(42,42,42);
       }
       #btn-b {
         background-color: rgba(0, 0, 0, 0);
@@ -100,6 +103,10 @@
         top: 64vh;
         left: 37.7vh;
         border-radius: 50vh;
+        box-shadow: inset 1px 1px 10px 1px  rgb(141, 56, 101), 1px 1px 10px 1px rgb(42,42,42);
+      }
+      #btn-b:hover {
+        box-shadow: inset 1px 1px 10px 1px black, 1px 1px 10px 1px rgb(42,42,42);
       }
       #btn-select {
         background-color: rgba(0, 0, 0, 0);
@@ -131,38 +138,68 @@
         background-image: url("{% static 'images/battle_scene.png' %}");
         background-size: contain;
         position: relative;
+        box-shadow: inset 3px 3px 5px black;
       }
       .battle_poster {
         position: absolute;
-        width: 13vh;
-        height: 15vh;
-        right: 2.5vh;
+        width: 10vh;
+        height: 14.8vh;
+        right: 5vh;
         top: 1vh;
         background-size: contain;
         background-repeat: no-repeat;
-        background-image: url("https://m.media-amazon.com/images/M/MV5BMTE3N2IwNmMtOGE0Ny00NWFlLTliNmUtNjY3ODExYjgxNmUyXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg");
+        box-shadow: 5px 5px 5px #424242;
       }
-      .movie_strength {
+      .battle_movie_strength {
         position: absolute;
         font-size: 1vh;
-        left: 22vh;
-        top: 3.8vh;
+        left: 21vh;
+        top: 7.5vh;
         color: #383838;
         text-shadow: 1px 1px 1px #383838;
       }
-      .movie_name {
+      .battle_movie_name {
         position: absolute;
         font-size: 1.5vh;
-        left: 3.5vh;
-        top: 3.5vh;
+        left: 3.8vh;
+        /* top: 3.7vh; */
+        word-wrap: break-word;
+        width:320px;
+        bottom: 32vh;
         color: #383838;
         text-shadow: 1px 1px 1px #383838;
       }
       .battle_text {
         position: absolute;
-        font-size: 2vh;
-        left: 3.5vh;
-        top: 26vh;
+        font-size: 1.9vh;
+        left: 3vh;
+        top: 25vh;
+        word-wrap:break-word;
+        width: 620px;
+        color: #383838;
+        text-shadow: 1px 1px 1px #383838;
+      }
+      .battle_text_second_line {
+        position: absolute;
+        font-size: 1.5vh;
+        right: 3.5vh;
+        top: 31.3vh;
+        color: #383838;
+        text-shadow: 1px 1px 1px #383838;
+      }
+      .battle_movie_ball {
+        position: absolute;
+        font-size: 1.5vh;
+        left: 31vh;
+        top: 19.6vh;
+        color: #383838;
+        text-shadow: 1px 1px 1px #383838;
+      }
+      .battle_user_power {
+        position: absolute;
+        font-size: 1vh;
+        right: 6vh;
+        top: 20vh;
         color: #383838;
         text-shadow: 1px 1px 1px #383838;
       }
@@ -204,6 +241,7 @@
         display: flex;
         flex-direction: column;
         justify-content: space-around;
+        box-shadow: inset 3px 3px 5px black;
       }
       .moviedex-card-container {
         display: flex;
@@ -236,6 +274,41 @@
       }
       .moviedex-ative {
         transform: scale(1.2);
+      }
+      
+      /* moviedex detail */
+      .moviedex-detail-container {
+        width: 100%;
+        height: 100%;
+        border-radius: 25px;
+        background-color: white;
+        color: black;
+        overflow: hidden;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+      }
+      .moviedex-detail-image {
+        width: 45%;
+        height: 90%;
+        object-fit: contain;
+        margin-top: auto;
+        margin-bottom: auto;
+      }
+      .moviedex-detail-info {
+        width: 50%;
+        height: 100%;
+        margin-top: auto;
+        margin-bottom: auto;
+      }
+      .moviedex-detail-button {
+        margin: 0.25vh !important;
+        padding: 0.5vh !important;
+        box-sizing: border-box;
+        border: solid #545454 0.25vh;
+        font-size: 1.5vh;
+        position: absolute;
+        bottom: 1vh;
       }
     </style>
   </head>

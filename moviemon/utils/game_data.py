@@ -64,7 +64,7 @@ class GameData():
         f.close()
 
         for key, value in data.items():
-            result.captured_list.append(key)
+            # result.captured_list.append(key)
             result.moviemon[key] = {
                 "title": value["Title"],
                 "year": value["Year"],
