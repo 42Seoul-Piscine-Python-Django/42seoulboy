@@ -1,3 +1,4 @@
+from moviemon.utils.game_data import GameData, load_session_data
 from moviemon.middleware.loadSessionMiddleware import loadSession_middleware
 from django.shortcuts import redirect, render
 from django.views.generic import TemplateView
