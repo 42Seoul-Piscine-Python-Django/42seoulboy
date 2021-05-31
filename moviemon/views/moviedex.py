@@ -1,6 +1,7 @@
 # from moviemon.middleware.loadSessionMiddleware import loadSession_middleware
 from django.shortcuts import redirect, render
 from django.views.generic import TemplateView
+from django.views.generic.base import View
 
 from moviemon.utils.data import Data
 
@@ -32,11 +33,12 @@ class Moviedex(TemplateView):
                 return MoviedexState["posistion"]
 
         # game = GameData.load(load_session_data())
-        mydict = data.get("my_moviemons")
-        mylst = [[k, v] for k, v in mydict.items()]
+        mymons = data.get("my_moviemons")
+        mylst = [[k, v] for k, v in mymons.items()]
 
-        for k, v in mydict.items():
-            print(v)
+        print("mymons:")
+        # for k, v in mymons.items():
+        #     print(v.data)
         # ["영화 id", "무비몬 인스턴스"] 로 구성된 리스트
 
         if now() >= len(mylst):
@@ -69,34 +71,38 @@ class Moviedex(TemplateView):
 
         self.context["movies"] = []
         if now() > 0:
-            mov_id = mylst[now() - 1]
+            mov_id = mylst[now() - 1][0]
+            print("mov_id:", mov_id)
             self.context["movies"].append(
                 {
-                    "poster": mydict[mov_id].poster,
+                    "poster": data.get_movie(mov_id)["poster"],
                     "class": "moviedex-blur",
                 }
             )
         if len(mylst) > 0:
-            mov_id = mylst[now()]
+            mov_id = mylst[now()][0]
+            print("mov_id:", mov_id)
             self.context["movies"].append(
                 {
-                    "poster": mydict[mov_id].poster,
+                    "poster": data.get_movie(mov_id)["poster"],
                     "class": "moviedex-ative ",
                 }
             )
         if now() < len(mylst) - 1:
-            mov_id = mylst[now() + 1]
+            mov_id = mylst[now() + 1][0]
+            print("mov_id:", mov_id)
             self.context["movies"].append(
                 {
-                    "poster": mydict[mov_id].poster,
+                    "poster": data.get_movie(mov_id)["poster"],
                     "class": "moviedex-blur",
                 }
             )
         if now() == 0 and 1 < len(mylst):
-            mov_id = mylst[2]
+            mov_id = mylst[2][0]
+            print("mov_id:", mov_id)
             self.context["movies"].append(
                 {
-                    "poster": mydict[mov_id].poster,
+                    "poster": data.get_movie(mov_id)["poster"],
                     "class": "moviedex-blur",
                 }
             )

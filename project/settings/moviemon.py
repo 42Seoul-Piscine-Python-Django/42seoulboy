@@ -1,6 +1,6 @@
 from os import environ
 
-MOVIE_LOAD_INTERNAL = True
+MOVIE_LOAD_INTERNAL = True  # TODO: make it work on false
 
 OMDB_API_KEY = (
     "2562735f"
@@ -22,6 +22,8 @@ IMDB_ID_LIST = [
     "tt1844770",
     "tt0329101",
     "tt0372873",
+]
+"""
     "tt1934381",
     "tt1270797",
     "tt3967856",
@@ -58,3 +60,4 @@ IMDB_ID_LIST = [
     "tt7904362",
     "tt1788453",
 ]
+"""

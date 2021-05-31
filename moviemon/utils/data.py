@@ -113,19 +113,23 @@ class Data:
             print("LOADING FROM OMDB...")
             import requests
 
-            for movieid in settings.IMDB_LIST:
-                params = {"apikey": settings.OMDB_API_KEY, "i": movieid}
-                result = dict()
-                data = requests.get(settings.OBDB_URL, params=params).json()
-                result[movieid] = Moviemon(
-                    title=data["Title"],
-                    year=data["Year"],
-                    director=data["Director"],
-                    poster=data["Poster"],
-                    rating=float(data["imdbRating"]),
-                    plot=data["Plot"],
-                    actors=data["Actors"],
-                )
+            try:
+                for movieid in settings.IMDB_LIST:
+                    params = {"apikey": settings.OMDB_API_KEY, "i": movieid}
+                    result = dict()
+                    data = requests.get(settings.OBDB_URL, params=params).json()
+                    result[movieid] = Moviemon(
+                        title=data["Title"],
+                        year=data["Year"],
+                        director=data["Director"],
+                        poster=data["Poster"],
+                        rating=float(data["imdbRating"]),
+                        plot=data["Plot"],
+                        actors=data["Actors"],
+                    )
+            except Exception as e:
+                raise e
+
             print("OMDB LIST TURNED OUT:", result)
             return result
 
@@ -152,7 +156,7 @@ class Data:
         """
         [과제] 무비몬 id를 입력받아 필요한 모든 정보를 반환
         """
-        movmon = data.get("my_moviemons")
+        movmon = self.get("my_moviemons")
         return movmon[movie_id].data
 
     def update(self, key: str, value, save: bool = True) -> None:
