@@ -8,39 +8,52 @@ current_slot = "LOCAL"
 
 
 class Data:
-    def __init__(self, data: dict = None):
+    def __new__(cls, *args, **kwargs):
         """
-        데이터 딕셔너리를 명시하면 덮어씌워줌.
-        데이터 구조: (접근법: dump() 또는 data.get("my_moviemons"))
-            not_yet_moviemons: 아직 잡지 않은 무비몬 목록
-            my_moviemons: 내가 잡은 무비몬 목록
-            map: 지도
-            movieballs: 무비볼 수
-            pos: 플레이어 위치
-        함수 목록:
-            save, load, load_default_settings
-            dump, get
+        싱글톤 패턴 구현
         """
+        if not hasattr(cls, "_instance"):  # 클래스 객체에 _instance 속성이 없다면
+            print("__new__ is called\n")
+            cls._instance = super().__new__(cls)
+            # 클래스의 객체를 생성하고 Foo._instance로 바인딩
+        return cls._instance  # Foo._instance를 리턴
 
-        self.slot = current_slot  # A, B, C 중 하나
-        if data:
-            self.data = data
-        elif self.slot == "LOCAL":
-            self.data = self.load_default_settings()
-        else:
-            self.data = self.load()
+    def __init__(self, data: dict = None):
+        cls = type(self)
+        if not hasattr(cls, "_init"):  # init은 한 번만 실행됨
+            cls._init = True
+            """
+            데이터 딕셔너리를 명시하면 덮어씌워줌.
+            데이터 구조: (접근법: dump() 또는 data.get("my_moviemons"))
+                not_yet_moviemons: 아직 잡지 않은 무비몬 목록
+                my_moviemons: 내가 잡은 무비몬 목록
+                map: 지도
+                movieballs: 무비볼 수
+                pos: 플레이어 위치
+            함수 목록:
+                save, load, load_default_settings
+                dump, get
+            """
+
+            self.slot = current_slot  # A, B, C 중 하나
+            if data:
+                Data.data = data
+            elif self.slot == "LOCAL":
+                Data.data = self.load_default_settings()
+            else:
+                Data.data = self.load()
 
     def __make_slot(self):
         # print("\n\n\nCURRENT SLOT:", self.slot)
         n = self.slot.lower()
-        sc = len(self.data.get("my_moviemons"))
-        tot = len(self.data.get("not_yet_moviemons"))
+        sc = len(Data.data.get("my_moviemons"))
+        tot = len(Data.data.get("not_yet_moviemons"))
         score = f"{sc}_{sc + tot}"
         return f"slot{n}_{score}.mmg"
 
     def save(self, slot="LOCAL"):
         with open(self.__make_slot(), "wb") as f:
-            pickle.dump(self.data, f)
+            pickle.dump(Data.data, f)
 
     def load(self):
         """
@@ -48,27 +61,27 @@ class Data:
         -> 현재 인스턴스
         """
         with open(self.__get_slot(), "rb") as f:
-            self.data = pickle.load(f)
+            Data.data = pickle.load(f)
             return self
 
     def dump(self):
         """
         [과제] 저장하고 있는 게임정보 딕셔너리를 반환
         """
-        return self.data
+        return Data.data
 
     def get(self, target, whenfail=None):
         """
         인스턴트 자체를 딕셔너리처럼 이용하여 검색.
         예시: data = Data(); data.get("pos") -> (1,1)
         """
-        return self.data.get(target, whenfail)
+        return Data.data.get(target, whenfail)
 
     def get_random_movie(self):
         """
         [과제] 아직 잡지 않은 랜덤한 무비몬 반환
         """
-        return self.data[""]
+        return Data.data[""]
 
     def load_default_settings(self):
         """
@@ -79,7 +92,7 @@ class Data:
         from django.conf import settings
 
         const = settings.CONSTANTS
-        self.data = {
+        Data.data = {
             "pos": const["PLAYER_INIT_POS"],
             "movieballs": const["PLATER_INIT_MOVIEBALLS"],
             "not_yet_moviemons": [],
@@ -110,7 +123,7 @@ class Data:
 
         func = __load_internal if settings.MOVIE_LOAD_INTERNAL else __load_omdb
         self.update("not_yet_moviemons", func())
-        # print("******MY DATA IS", self.data, "********")
+        # print("******MY DATA IS", Data.data, "********")
 
     def get_strength(self):
         """
@@ -131,7 +144,7 @@ class Data:
         저장을 끄고싶다면 (예:여러 수정 후 한번에 저장) save=False로 사용
         """
         try:
-            self.data[key] = value
+            Data.data[key] = value
         except Exception as e:
             raise Exception(f"key {key} caused Error {e}")
         if save:

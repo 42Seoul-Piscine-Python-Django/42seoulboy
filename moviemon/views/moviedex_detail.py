@@ -1,8 +1,11 @@
-from moviemon.utils.game_data import GameData, load_session_data
-from moviemon.middleware.loadSessionMiddleware import loadSession_middleware
+# from moviemon.utils.game_data import GameData, load_session_data
+# from moviemon.middleware.loadSessionMiddleware import loadSession_middleware
 from django.shortcuts import redirect, render
 from django.views.generic import TemplateView
-from ..utils.game_data import load_session_data, GameData
+
+from moviemon.utils.data import Data
+
+# from ..utils.game_data import load_session_data, GameData
 
 
 position = {"x": 0, "y": 0}
@@ -14,10 +17,12 @@ class Moviedex_detail(TemplateView):
 
     # @loadSession_middleware
     def get(self, request, moviemon_id):
-        game = GameData.load(load_session_data())
-        self.context = game.moviemon[moviemon_id]
-        key = request.GET.get('key', None)
-        if (key is not None):
+        # game = GameData.load(load_session_data())
+        # self.context = game.moviemon[moviemon_id]
+        # TODO: context add
+        self.context = {}
+        key = request.GET.get("key", None)
+        if key is not None:
             print(key)
             if key == "up":
                 position["x"] += 1

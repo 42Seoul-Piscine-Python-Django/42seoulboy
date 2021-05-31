@@ -12,7 +12,7 @@ class Keys:
             "right": {"do": "move", "args": (1, 0)},
             "a": {"do": "redirect", "args": "battle"},
             "start": {"do": "redirect", "args": "option"},
-            "select": {"do": "redirect", "args": "movidex"},
+            "select": {"do": "redirect", "args": "moviedex"},
         },
         "battle": {},
         "moviedex": {},
@@ -46,7 +46,6 @@ class Keys:
 
     def __call__(self, state, called):
         return self.states.get(state).get(called)
-
 
 
 if __name__ == "__main__":
