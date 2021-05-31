@@ -24,7 +24,7 @@ class Keys:
 
     def __new__(cls, *args, **kwargs):
         """
-        클래스를 바로 사용하가니. 인스턴스 생성 후 keys(<현재 페이지 이름>, <키입력>)식으로 사용
+        클래스를 바로 사용하거나. 인스턴스 생성 후 keys(<현재 페이지 이름>, <키입력>)식으로 사용
         예)
         인스턴스: k = Keys(); k("worldmap", "up") -> {"do": "move", "args": (0, 1)}
         클래스 : Keys("worldmap", "up") -> {"do": "move", "args": (0, 1)}
@@ -46,6 +46,7 @@ class Keys:
 
     def __call__(self, state, called):
         return self.states.get(state).get(called)
+
 
 
 if __name__ == "__main__":

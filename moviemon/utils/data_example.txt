@@ -1,0 +1,7 @@
+data = {
+    "pos": (0, 0),
+    "movieballs": 0,
+    "captured_list": [],
+    "map": [[], [], [], []],
+    "moviemons": {},
+}

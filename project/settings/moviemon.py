@@ -1,13 +1,16 @@
 from os import environ
 
+MOVIE_LOAD_INTERNAL = True
+
 OMDB_API_KEY = (
     "2562735f"
     if environ.get("OMDB_API_KEY") is None
     else environ.get("OMDB_API_KEY")
 )
 
+OMDB_URL = "http://www.omdbapi.com/"
 
-IMDB_LIST = [
+IMDB_ID_LIST = [
     "tt0468492",
     "tt5034838",
     "tt0078748",

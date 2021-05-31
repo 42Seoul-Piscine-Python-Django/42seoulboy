@@ -13,24 +13,6 @@ class Engine:
         self.px, self.py = playerpos
         self.camera = Camera(screen, offset)
 
-    def info(self):
-        """
-        화면에 출력, 모드로 방식 결정
-        """
-        lines = []
-        for y in range(self.height):
-            l = ""
-            for x in range(self.width):
-                if (self.py, self.px) == (y, x):
-                    l += "@"
-                elif self.map[y][x].content:
-                    l += "X"
-                else:
-                    l += "."
-            lines.append(l)
-        for l in lines:
-            print(l)
-
     def add_to_tile(self, x, y, obj):
         self.map[x][y]
 
@@ -53,9 +35,9 @@ class Engine:
             l = ""
             for x in range(self.width):
                 if (self.py, self.px) == (y, x):
-                    l += "@"
+                    l += "O"
                 elif self.map[y][x].content:
-                    l += "_"
+                    l += "?"
                 else:
                     l += "X"
             lines.append(l)
