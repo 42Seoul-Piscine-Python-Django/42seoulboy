@@ -26,14 +26,15 @@ def load_session_data():
 
 
 class GameData():
-    px: int = settings.PLAYER_INIT_POSITION[0]
-    py: int = settings.PLAYER_INIT_POSITION[1]
-    captured_list: List[str] = []
-    moviemon: Dict[str, Dict[str, str]] = {}
-    mapsize: Tuple[int, int] = settings.GRID_SIZE
-    map: List[List[int]] = [
-        [0 for _ in range(settings.GRID_SIZE[1])] for _ in range(settings.GRID_SIZE[0])]
-    movieballCount: int = settings.GRID_SIZE[0] * settings.GRID_SIZE[1] / 10
+    def __init__(self) -> None:
+        self.px: int = settings.PLAYER_INIT_POSITION[0]
+        self.py: int = settings.PLAYER_INIT_POSITION[1]
+        self.captured_list: List[str] = []
+        self.moviemon: Dict[str, Dict[str, str]] = {}
+        self.mapsize: Tuple[int, int] = settings.GRID_SIZE
+        self.movieballCount: int = settings.GRID_SIZE[0] * settings.GRID_SIZE[1] / 10
+        # self.map: List[List[int]] = [
+        #     [0 for _ in range(settings.GRID_SIZE[1])] for _ in range(settings.GRID_SIZE[0])]
 
     def dump(self):
         return {
@@ -45,6 +46,7 @@ class GameData():
             "map": self.map,
         }
 
+    @staticmethod
     def load(data):
         result = GameData()
         result.px = data["px"]
@@ -55,6 +57,7 @@ class GameData():
         result.map = data["map"]
         return result
 
+    @staticmethod
     def load_default_settings():
         result = GameData()
         URL = "http://www.omdbapi.com/"
@@ -74,18 +77,6 @@ class GameData():
                 "plot": value["Plot"],
                 "actors": value["Actors"],
             }
-
-        # for key, value in data.items():
-        #     result.captured_list.append(key)
-        #     result.moviemon[key] = {
-        #         "title": value["Title"],
-        #         "year": value["Year"],
-        #         "director": value["Director"],
-        #         "poster": value["Poster"],
-        #         "rating": float(value["imdbRating"]),
-        #         "plot": value["Plot"],
-        #         "actors": value["Actors"],
-        #     }
 
         for id in settings.IMDB_LIST:
             params = {
