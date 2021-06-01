@@ -17,7 +17,7 @@ class Tile:
         self.content = content
         self.seen = seen
         self.heat = 0
-        self.rgb(152, 161, 154, 4, 3, 3, force=True)
+        self.rgb(152, 161, 154, 4, 3, 3)
         # self.r, self.g, self.b = 182, 191, 184
 
     def __str__(self):
@@ -26,22 +26,21 @@ class Tile:
     def visit(self, heat=16):
         self.heat += heat
 
-    def rgb(self, r, g, b, mulr, mulg, mulb, force=False):
-        if force or self.heat:
-            self.r = r - mulr * self.heat
-            self.g = g - mulg * self.heat
-            self.b = b - mulb * self.heat
+    def rgb(self, r, g, b, mulr, mulg, mulb):
+        self.r = r - mulr * self.heat
+        self.g = g - mulg * self.heat
+        self.b = b - mulb * self.heat
         # print(f"{self.heat}, my rgb:{self.r},{self.g},{self.b}")
 
     def update(self):
         """
         업데이트!
         """
+        self.heat = clip(self.heat, (-16, 16))
         if self.heat > 0:
             self.heat -= 1
         elif self.heat < 0:
             self.heat += 1
-        self.heat = clip(self.heat, (-16, 16))
         self.rgb(152, 161, 154, 4, 3, 3)
 
 
@@ -60,11 +59,11 @@ def radar(mmap, ppos):
     for i in range(5):
         for j in range(5):
             if radmap[i][j] == "#":
+                a, b = max(x + i, 0), max(y + j, 0)
                 try:
-                    a, b = max(x + i, 0), max(y + j, 0)
+                    mmap[b][a].visit(-16)
                     if mmap[b][a].content:
                         mmap[b][a].seen = 1
-                    mmap[b][a].visit(-16)
                 except Exception as e:
                     print(e)
                     pass
