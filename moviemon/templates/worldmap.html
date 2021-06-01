@@ -12,13 +12,13 @@
       <td class="worldmap-td {% if x.content == "@" %}
         worldmap-player
         {% endif %}
-        "style="background-color: rgb({{x.cool}},  {{x.cool}}, {{x.cool}})";  text-align:center;>
+        "style="background-color: rgb({{x.r}}, {{x.g}}, {{x.b}})";  text-align:center;>
         {% if x.content == "movieball" and x.seen == 1 %}
-          o
-        {%elif x.content == "moviemon" and x.seen == 1 %}
+          0 
+        {% elif x.content == "moviemon" and x.seen == 1 %}
           !
-        {% elif x.content != "movieradar" and x.seen == 1%}
-          *
+        {% elif x.content == "movieradar" and x.seen == 1%}
+          ;
         {% elif not x.content %}
            
         {% elif x.content != "@" %}

@@ -10,7 +10,12 @@ from moviemon.utils.moviemon import Moviemon
 from moviemon.views.battle import battleState
 
 from .map import Tile, populate_moviemon
-from .map import populate_movieball, populate_moviemon, populate_movieradar
+from .map import (
+    populate_movieball,
+    populate_moviemon,
+    populate_movieradar,
+    radar,
+)
 from .camera import Camera
 
 import random
@@ -68,7 +73,7 @@ class Engine:
     def __coll(self, target):
         if self.map[self.py][self.px].content == target:
             self.map[self.py][self.px].content = ""
-            self.map[self.py][self.px].seen = False
+            self.map[self.py][self.px].seen = 0
             return True
 
     def collisioncheck(self):
@@ -76,6 +81,7 @@ class Engine:
             self.movball += 1
             self.state = "movieball"
         if self.__coll("movieradar"):
+            radar(self.map, (self.px, self.py))
             self.state = "movieradar"
         if self.__coll("moviemon"):
             self.state = "battle"
@@ -105,7 +111,7 @@ class Engine:
         # print("pop")
         # if True:
         self.spawn(populate_movieball, 10, 3)
-        self.spawn(populate_movieradar, 40, 1)
+        self.spawn(populate_movieradar, 20, 1)
         if random.randint(1, 4) == 1:
             map_moviemons = 0
             for y in self.map:

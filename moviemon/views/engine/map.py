@@ -4,30 +4,75 @@ from django.conf import settings
 
 from moviemon.utils.moviemon import Moviemon
 
+from .utils import clip
+
 # from moviemon.utils.data import Data
 
 # data = Data()
 
 
 class Tile:
-    def __init__(self, content: str = None, visited=False):
+    def __init__(self, content: str = None, seen=0):
         """ """
         self.content = content
-        self.visited = visited
-        self.maxcool = 200
-        self.cool = self.maxcool
+        self.seen = seen
+        self.heat = 0
+        self.rgb(152, 161, 154, 4, 3, 3, force=True)
+        # self.r, self.g, self.b = 182, 191, 184
 
     def __str__(self):
         return self.content
 
-    def visit(self, cool=100):
-        self.cool = cool
+    def visit(self, heat=16):
+        self.heat += heat
+
+    def rgb(self, r, g, b, mulr, mulg, mulb, force=False):
+        if force or self.heat:
+            self.r = r - mulr * self.heat
+            self.g = g - mulg * self.heat
+            self.b = b - mulb * self.heat
+        # print(f"{self.heat}, my rgb:{self.r},{self.g},{self.b}")
 
     def update(self):
         """
         업데이트!
         """
-        self.cool = min(self.cool + 10, self.maxcool)
+        if self.heat > 0:
+            self.heat -= 1
+        elif self.heat < 0:
+            self.heat += 1
+        self.heat = clip(self.heat, (-16, 16))
+        self.rgb(152, 161, 154, 4, 3, 3)
+
+
+def radar(mmap, ppos):
+    import math
+
+    offset = (-2, -2)
+    x, y = ppos[0] + offset[0], ppos[1] + offset[1]
+    radmap = [
+        ".###.",
+        "#####",
+        "#####",
+        "#####",
+        ".###.",
+    ]
+    for i in range(5):
+        for j in range(5):
+            if radmap[i][j] == "#":
+                try:
+                    a, b = max(x + i, 0), max(y + j, 0)
+                    if mmap[b][a].content:
+                        mmap[b][a].seen = 1
+                    mmap[b][a].visit(-16)
+                except Exception as e:
+                    print(e)
+                    pass
+
+    def ran(x1, y1, x2, y2):
+        return math.sqrt(math.pow(abs(x2 - x1)) + math.pow(abs(y2 - y1)))
+
+    pass
 
 
 def init_map(width, height, moviemons):
