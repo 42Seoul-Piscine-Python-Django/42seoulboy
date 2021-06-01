@@ -1,4 +1,5 @@
 import os
+from project.settings.moviemon import IMDB_LIST, IMDB_LIST_KOR
 import shutil
 from django.conf import settings
 
@@ -6,7 +7,7 @@ from typing import Dict, List, Tuple
 
 from moviemon.utils.moviemon import Moviemon
 from moviemon.views.engine.map import *
-from moviemon.views.engine.map import Tile
+from moviemon.views.engine.map import Tile, get_suitable
 
 
 import requests
@@ -16,8 +17,8 @@ import random
 
 
 def make_save_dir():
-    if not os.path.isdir('saved_game'):
-        os.mkdir('saved_game')
+    if not os.path.isdir("saved_game"):
+        os.mkdir("saved_game")
 
 
 def save_session_data(data):
@@ -43,8 +44,8 @@ def load_session_data():
 
 def load_slot_info():
     try:
-        if os.path.isfile('saved_game/slots.bin'):
-            with open('saved_game/slots.bin', "rb") as f:
+        if os.path.isfile("saved_game/slots.bin"):
+            with open("saved_game/slots.bin", "rb") as f:
                 return pickle.load(f)
         return {}
     except Exception as e:
@@ -57,19 +58,20 @@ def save_slot(slot):
     slots = load_slot_info()
     if data is not None:
         try:
-            score = "{}/{}".format(len(data['captured_list']),
-                                   len(data['moviemon']))
-            if slots.get(f'{slot}', None) is not None:
-                if os.path.isfile(slots[f'{slot}']['file']):
-                    os.remove(slots[f'{slot}']['file'])
+            score = "{}/{}".format(
+                len(data["captured_list"]), len(data["moviemon"])
+            )
+            if slots.get(f"{slot}", None) is not None:
+                if os.path.isfile(slots[f"{slot}"]["file"]):
+                    os.remove(slots[f"{slot}"]["file"])
             file = f"saved_game/slot{slot}_{len(data['captured_list'])}.mmg"
             with open(file, "wb") as f:
                 pickle.dump(data, f)
-            slots[f'{slot}'] = {
+            slots[f"{slot}"] = {
                 "score": score,
                 "file": file,
             }
-            with open('saved_game/slots.bin', "wb") as f:
+            with open("saved_game/slots.bin", "wb") as f:
                 pickle.dump(slots, f)
             return True
         except Exception as e:
@@ -83,13 +85,13 @@ def load_slot(slot):
     if slot == None:
         return False
     try:
-        shutil.copy(slot['file'], "saved_game/session.bin")
+        shutil.copy(slot["file"], "saved_game/session.bin")
         return True
     except:
         return False
 
 
-class GameData():
+class GameData:
     def __init__(self) -> None:
         self.pos: Tuple[int, int] = settings.PLAYER_INIT_POS
         self.captured_list: List[str] = []
@@ -101,8 +103,9 @@ class GameData():
         return self.moviemon[moviemon_id]
 
     def get_random_movie(self):
-        id_list = [m for m in self.moviemon.keys(
-        ) if not m in self.captured_list]
+        id_list = [
+            m for m in self.moviemon.keys() if not m in self.captured_list
+        ]
         return random.choice(id_list)
 
     def get_strength(self) -> int:
@@ -110,7 +113,7 @@ class GameData():
         sum_captured_rating = 3
         for i in captured_list:
             sum_captured_rating += self.moviemon[i].rating
-        if (len(captured_list) == 0):
+        if len(captured_list) == 0:
             return int(sum_captured_rating / 1)
         return int(sum_captured_rating / len(captured_list))
 
@@ -120,10 +123,10 @@ class GameData():
             "captured_list": self.captured_list,
             "moviemon": self.moviemon,
             "movieballCount": self.movieballCount,
-            "map": self.map
+            "map": self.map,
         }
 
-    @ staticmethod
+    @staticmethod
     def load(data):
         result = GameData()
         result.pos = data["pos"]
@@ -133,7 +136,7 @@ class GameData():
         result.map = data["map"]
         return result
 
-    @ staticmethod
+    @staticmethod
     def load_default_settings():
         result = GameData()
         URL = "http://www.omdbapi.com/"
@@ -153,14 +156,15 @@ class GameData():
         #         value["Plot"],
         #         value["Actors"],
         #     )
-
-        result.map = init_map(*settings.GRID_SIZE)
-
-        for id in settings.IMDB_LIST:
-            params = {
-                "apikey": settings.OMDB_API_KEY,
-                "i": id
-            }
+        if settings.IMDB_DIVERSE:
+            DB_LIST = random.choice(
+                [settings.IMDB_LIST, settings.IMDB_LIST_KOR]
+            )
+        else:
+            DB_LIST = settings.IMDB_LIST
+        DB_LIST = settings.IMDB_LIST_KOR
+        for id in DB_LIST:
+            params = {"apikey": settings.OMDB_API_KEY, "i": id}
             try:
                 data = requests.get(URL, params=params).json()
                 result.moviemon[id] = Moviemon(
@@ -174,5 +178,20 @@ class GameData():
                 )
             except Exception as e:
                 assert e
+        x, y = settings.GRID_SIZE
+        total = min(
+            int(x * y * random.randint(7, 11) / 80),
+            len(result.moviemon.keys()),
+        )
+        result.moviemon = get_suitable(
+            total,
+            result.moviemon,
+            max(3, int(total / 3)),
+            4,
+            max(3, int(total / 3)),
+            7,
+        )
+        result.map = init_map(*settings.GRID_SIZE, len(result.moviemon))
+        # print("total result.moviemon:", len(result.moviemon))
 
         return result

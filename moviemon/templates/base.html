@@ -2,6 +2,7 @@
 
 <!DOCTYPE html>
 <html lang="ko">
+
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -9,16 +10,14 @@
     {% block title %}
     <title>MOVIEMON</title>
     {% endblock title %}
-    <script
-      type="text/javascript"
-      src="{% static 'js/button_events.js' %}"
-    ></script>
+    <script type="text/javascript" src="{% static 'js/button_events.js' %}"></script>
     <style>
       @font-face {
         font-family: "PKMN RBYGSC";
         font-style: normal;
         src: url("{% static 'fonts/PKMN_RBYGSC.ttf' %}") format("truetype");
       }
+
       .container {
         margin-left: auto;
         margin-right: auto;
@@ -29,6 +28,7 @@
         background-size: cover;
         position: relative;
       }
+
       .content {
         width: 50vh;
         height: calc(0.75 * 50vh);
@@ -51,32 +51,51 @@
         flex-direction: column;
         justify-content: space-around;
       }
+
       .worldmap-table {
         margin-left: auto;
         margin-right: auto;
         table-layout: fixed;
         width: 26vh;
       }
+
       .worldmap-td {
         text-align: center;
 
         width: 2.8vh;
         height: 2.8vh;
       }
+
       .worldmap-player {
         background-image: url('{% static "images/player.png" %}');
         background-size: contain;
         background-repeat: no-repeat;
       }
+
       .worldmap-movieball {
         margin-top: -38vh;
         /* margin-left: 60vw; */
-        margin-left: 35vh;
+        /* margin-left: 35vh; */
+        /* margin-right: 10px; */
+        height: fit-content;
+        width: fit-content;
+        float: right;
+        display: flex;
+      }
+
+      .worldmap-message {
+        margin-top: -38vh;
+        margin-left: 2vw;
+        /* margin-left: 35vh; */
         /* margin-right: 10px; */
         height: fit-content;
         width: fit-content;
         display: flex;
+        float: left;
+        height: fit-content;
+        width: fit-content;
       }
+
       .worldmap-button-select {
         display: absolute;
         margin-top: -2.7vh;
@@ -87,6 +106,7 @@
         color: #383838;
         text-shadow: 1px 1px 1px #383838;
       }
+
       .worldmap-button-start {
         display: absolute;
         margin-top: -2.7vh;
@@ -108,6 +128,7 @@
         background-size: cover;
         box-shadow: inset 3px 3px 5px black;
       }
+
       .worldmap-flush-comment {
         font-size: 1.5vh;
         position: absolute;
@@ -126,6 +147,7 @@
         border-bottom-right-radius: 50px;
         border-bottom-left-radius: 50px;
       }
+
       #btn-down {
         background-color: rgba(0, 0, 0, 0);
         position: absolute;
@@ -137,6 +159,7 @@
         border-top-right-radius: 50px;
         border-top-left-radius: 50px;
       }
+
       #btn-left {
         background-color: rgba(0, 0, 0, 0);
         position: absolute;
@@ -148,6 +171,7 @@
         border-top-right-radius: 50px;
         border-bottom-right-radius: 50px;
       }
+
       #btn-right {
         background-color: rgba(0, 0, 0, 0);
         position: absolute;
@@ -171,11 +195,13 @@
         box-shadow: inset 1px 1px 10px 1px rgb(141, 56, 101),
           1px 1px 10px 1px rgb(42, 42, 42);
       }
+
       #btn-a:hover {
         box-shadow: inset 1px 1px 10px 1px black,
           1px 1px 10px 1px rgb(42, 42, 42);
       }
-        #btn-b {
+
+      #btn-b {
         background-color: rgba(0, 0, 0, 0);
         position: absolute;
         width: 7vh;
@@ -186,10 +212,12 @@
         box-shadow: inset 1px 1px 10px 1px rgb(141, 56, 101),
           1px 1px 10px 1px rgb(42, 42, 42);
       }
+
       #btn-b:hover {
         box-shadow: inset 1px 1px 10px 1px black,
           1px 1px 10px 1px rgb(42, 42, 42);
       }
+
       #btn-select {
         background-color: rgba(0, 0, 0, 0);
         position: absolute;
@@ -200,6 +228,7 @@
         left: 18vh;
         border-radius: 50vh;
       }
+
       #btn-start {
         background-color: rgba(0, 0, 0, 0);
         position: absolute;
@@ -222,6 +251,7 @@
         position: relative;
         box-shadow: inset 3px 3px 5px black;
       }
+
       .battle_poster {
         position: absolute;
         width: 10vh;
@@ -232,6 +262,7 @@
         background-repeat: no-repeat;
         box-shadow: 5px 5px 5px #424242;
       }
+
       .battle_movie_strength {
         position: absolute;
         font-size: 1vh;
@@ -240,6 +271,7 @@
         color: #383838;
         text-shadow: 1px 1px 1px #383838;
       }
+
       .battle_movie_name {
         position: absolute;
         font-size: 1.5vh;
@@ -251,6 +283,7 @@
         color: #383838;
         text-shadow: 1px 1px 1px #383838;
       }
+
       .battle_text {
         position: absolute;
         font-size: 1.9vh;
@@ -261,6 +294,7 @@
         color: #383838;
         text-shadow: 1px 1px 1px #383838;
       }
+
       .battle_text_second_line {
         position: absolute;
         font-size: 1.5vh;
@@ -269,6 +303,7 @@
         color: #383838;
         text-shadow: 1px 1px 1px #383838;
       }
+
       .battle_movie_ball {
         position: absolute;
         font-size: 1.5vh;
@@ -277,6 +312,7 @@
         color: #383838;
         text-shadow: 1px 1px 1px #383838;
       }
+
       .battle_user_power {
         position: absolute;
         font-size: 1vh;
@@ -285,6 +321,7 @@
         color: #383838;
         text-shadow: 1px 1px 1px #383838;
       }
+
       .battle_user_winning_rate {
         position: absolute;
         font-size: 1vh;
@@ -305,20 +342,22 @@
         flex-direction: column;
         justify-content: space-around;
       }
+
       .title-header {
         font-size: 5vh;
         width: fit-content;
         margin: 0;
         margin-left: auto;
         margin-right: auto;
-        border-bottom:solid #424242 1vh;
+        border-bottom: solid #424242 1vh;
       }
+
       .title-button {
         margin: 0.5vh !important;
         padding: 0.5vh !important;
         /* box-sizing: border-box;
         border: solid #545454 0.25vh; */
-        text-align:center;
+        text-align: center;
         font-size: 3vh;
       }
 
@@ -335,6 +374,7 @@
         justify-content: space-around;
         box-shadow: inset 3px 3px 5px black;
       }
+
       .moviedex-card-container {
         display: flex;
         flex-wrap: nowrap;
@@ -348,17 +388,20 @@
         margin-bottom: auto;
         object-fit: contain;
       }
+
       .moviedex-blur {
         background-color: rgba(0, 0, 0, 0.125);
         box-shadow: inset 0 0 0 1000px rgba(255, 255, 255, 0.5);
         filter: blur(3px);
       }
+
       .moviedex-button-container {
         width: 100%;
         height: 20%;
         border-radius: 25px;
         background-color: white;
       }
+
       .moviedex-button-a {
         /* display: relative; */
         /* box-sizing: border-box; */
@@ -371,6 +414,7 @@
         color: #383838;
         text-shadow: 1px 1px 1px #383838;
       }
+
       .moviedex-button-b {
         /* display: absolute; */
         /* box-sizing: border-box; */
@@ -383,6 +427,7 @@
         color: #383838;
         text-shadow: 1px 1px 1px #383838;
       }
+
       .moviedex-ative {
         transform: scale(1.2);
       }
@@ -399,6 +444,7 @@
         flex-direction: row;
         justify-content: space-around;
       }
+
       .moviedex-detail-image {
         width: 45%;
         height: 90%;
@@ -406,12 +452,14 @@
         margin-top: auto;
         margin-bottom: auto;
       }
+
       .moviedex-detail-info {
         width: 50%;
         height: 100%;
         margin-top: auto;
         margin-bottom: auto;
       }
+
       .moviedex-detail-button {
         margin: 0.25vh !important;
         padding: 0.5vh !important;
@@ -433,6 +481,7 @@
         position: relative;
         box-shadow: inset 3px 3px 5px black;
       }
+
       .option-comment-block {
         width: 100%;
         height: 30%;
@@ -443,12 +492,14 @@
         background-size: cover;
         box-shadow: inset 3px 3px 5px black;
       }
+
       .option-comment {
         font-size: 1.5vh;
         position: absolute;
         top: 3vh;
         left: 5vw;
       }
+
       /* save detail */
       .save_scene {
         width: 100%;
@@ -461,6 +512,7 @@
         box-shadow: inset 3px 3px 5px black;
         overflow: hidden;
       }
+
       .save-comment-block {
         width: 100%;
         height: 93%;
@@ -471,24 +523,28 @@
         background-size: contain;
         box-shadow: inset 3px 3px 5px black;
       }
+
       .save-comment-a {
         font-size: 3vh;
         position: absolute;
         top: 4vh;
         left: 4vw;
       }
+
       .save-comment-b {
         font-size: 3vh;
         position: absolute;
         top: 15vh;
         left: 4vw;
       }
+
       .save-comment-c {
         font-size: 3vh;
         position: absolute;
         top: 27vh;
         left: 4vw;
       }
+
       .save-button-a {
         display: absolute;
         margin-top: 34vh;
@@ -499,6 +555,7 @@
         color: #383838;
         text-shadow: 1px 1px 1px #383838;
       }
+
       .save-button-b {
         display: absolute;
         margin-top: 34vh;
@@ -511,6 +568,7 @@
       }
     </style>
   </head>
+
   <body>
     <div class="container">
       <div class="content">{% block content %}{% endblock content %}</div>
@@ -524,4 +582,5 @@
       <a href="{{ request.path }}?key=start" id="btn-start"></a>
     </div>
   </body>
+
 </html>
