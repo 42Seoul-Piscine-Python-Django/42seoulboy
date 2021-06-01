@@ -6,7 +6,7 @@ from ..utils.game_data import load_session_data, GameData, save_session_data
 import random
 
 battleState = {
-    'id': "",
+    "id": "",
     "text": "Gotcha!! {} ",
     "button-text": "🅰 Launch Movie Ball   🅱 Run",
 }
@@ -28,8 +28,11 @@ class Battle(TemplateView):
     #     return int(sum_captured_rating / len(captured_list))
     def calculate_winning_rate(self, game, moviemon_id):
         # TODO: 포켓볼 - 1
-        getchance = 50 - \
-            game.moviemon[moviemon_id].rating * 10 + game.get_strength() * 5
+        getchance = (
+            50
+            - game.moviemon[moviemon_id].rating * 10
+            + game.get_strength() * 5
+        )
         if getchance >= 90:
             getchance = 90
         elif getchance <= 1:
@@ -38,14 +41,14 @@ class Battle(TemplateView):
 
     def useball(self, game, request, moviemon_id):
         getchance = self.calculate_winning_rate(game, moviemon_id)
-        if getchance >= random.randrange(1, 101):
+        if getchance >= random.randrange(1, 100):
             battleState["text"] = "Gotcha!! {} "
-            battleState['button-text'] = "🅰 Continue"
+            battleState["button-text"] = "🅰 Continue"
             game.captured_list.append(moviemon_id)
             save_session_data(game.dump())
             print("success")
         else:
-            battleState['text'] = "You missed !"
+            battleState["text"] = "You missed !"
             print("fail")
         return redirect(request.path)
 
@@ -61,44 +64,48 @@ class Battle(TemplateView):
         TODO: key에 대한 이벤트 핸들링 필요
         """
         # game.captured_list = []
-        key = request.GET.get('key', None)
+        key = request.GET.get("key", None)
 
         # if moviemon_id not in battleState['id']:
         if moviemon_id not in game.captured_list:
-            if moviemon_id != battleState['id']:
-                battleState['text'] = "Wild {} appeared."
-                battleState['button-text'] = "🅰 Use Movie Ball   🅱 Run"
-                battleState['id'] = moviemon_id
+            if moviemon_id != battleState["id"]:
+                battleState["text"] = "Wild {} appeared."
+                battleState["button-text"] = "🅰 Use Movie Ball   🅱 Run"
+                battleState["id"] = moviemon_id
         else:
             battleState["text"] = "Gotcha!! {} "
-            battleState['button-text'] = "🅱 Continue"
+            battleState["button-text"] = "🅱 Continue"
 
-        if (key is not None):
+        if key is not None:
             print(key)
-            if (key == 'a'):
+            if key == "a":
                 if moviemon_id not in game.captured_list:
                     if game.movieballCount < 1:
                         return redirect(request.path)
                     game.movieballCount -= 1
                     save_session_data(game.dump())
                     return self.useball(game, request, moviemon_id)
-            elif (key == 'b'):
-                battleState['text'] = "Wild {} appeared."
+            elif key == "b":
+                battleState["text"] = "Wild {} appeared."
                 return redirect("worldmap")
-            elif (key == 'start'):
+            elif key == "start":
                 pass
-            elif (key == 'select'):
+            elif key == "select":
                 pass
             return redirect(request.path)
         self.context = {
-            'moviemon_id': moviemon_id,
-            'movie_title': game.moviemon[moviemon_id].title,
-            'movie_poster': game.moviemon[moviemon_id].poster,
-            'movie_rating': game.moviemon[moviemon_id].rating,
-            'user_rating': game.get_strength(),
-            'user_text': battleState['text'].format(game.moviemon[moviemon_id].title),
-            'pocketball_number': game.movieballCount,
-            'button_text': battleState['button-text'],
-            'user_winning_rate': "⚔️ {}%".format(str(self.calculate_winning_rate(game, moviemon_id))),
+            "moviemon_id": moviemon_id,
+            "movie_title": game.moviemon[moviemon_id].title,
+            "movie_poster": game.moviemon[moviemon_id].poster,
+            "movie_rating": game.moviemon[moviemon_id].rating,
+            "user_rating": game.get_strength(),
+            "user_text": battleState["text"].format(
+                game.moviemon[moviemon_id].title
+            ),
+            "pocketball_number": game.movieballCount,
+            "button_text": battleState["button-text"],
+            "user_winning_rate": "⚔️ {}%".format(
+                str(self.calculate_winning_rate(game, moviemon_id))
+            ),
         }
         return render(request, self.template_name, self.context)

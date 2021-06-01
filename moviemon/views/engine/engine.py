@@ -68,6 +68,7 @@ class Engine:
     def __coll(self, target):
         if self.map[self.py][self.px].content == target:
             self.map[self.py][self.px].content = ""
+            self.map[self.py][self.px].seen = False
             return True
 
     def collisioncheck(self):
@@ -89,8 +90,7 @@ class Engine:
                 random.randint(1, amount),
             )
 
-    def update(self):
-        self.collisioncheck()
+    def visit(self):
         self.map[self.py][self.px].visit()
         for y in self.map:
             for x in y:
@@ -98,10 +98,14 @@ class Engine:
                 if x.content == "@":
                     x.content = ""
         self.map[self.py][self.px].content = "@"
+
+    def update(self):
+        self.collisioncheck()
+        self.visit()
         # print("pop")
         # if True:
         self.spawn(populate_movieball, 10, 3)
-        self.spawn(populate_movieradar, 10, 1)
+        self.spawn(populate_movieradar, 40, 1)
         if random.randint(1, 4) == 1:
             map_moviemons = 0
             for y in self.map:

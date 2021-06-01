@@ -162,7 +162,7 @@ class GameData:
             )
         else:
             DB_LIST = settings.IMDB_LIST
-        DB_LIST = settings.IMDB_LIST_KOR
+        # DB_LIST = settings.IMDB_LIST_KOR
         for id in DB_LIST:
             params = {"apikey": settings.OMDB_API_KEY, "i": id}
             try:

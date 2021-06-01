@@ -2,17 +2,17 @@ class Message:
     msg = {
         "battle": "Encountered a moviemon!",
         "movieball": "Picked up a movieball!",
-        "radar": "Picked up a movieradar!",
+        "movieradar": "Picked up a movieradar!",
         "none": "",
     }
 
     def __init__(self, key):
         self.key = key
-        self.log = Message.msg.get(key, "wrong key!")
+        self.log = Message.msg.get(key, "WRONG KEY!")
         self.ammount = 1
 
     def __str__(self):
-        if self.ammount >= 2:
+        if self.ammount >= 2 and not self.key == "none":
             return f"{self.log} ✖{self.ammount}"
         return self.log
 
@@ -22,7 +22,7 @@ class Message:
         else:
             self.ammount = 1
         self.key = key
-        self.log = Message.msg.get(key, "")
+        self.log = Message.msg.get(key, f"wrong key! key:{key}")
 
 
 if __name__ == "__main__":

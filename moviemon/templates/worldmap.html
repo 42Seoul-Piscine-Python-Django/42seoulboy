@@ -13,14 +13,16 @@
         worldmap-player
         {% endif %}
         "style="background-color: rgb({{x.cool}},  {{x.cool}}, {{x.cool}})";  text-align:center;>
-        {% if x.content == "movieball" %}
-          ?
-        {%elif x.content == "moviemon" %}
+        {% if x.content == "movieball" and x.seen == 1 %}
+          o
+        {%elif x.content == "moviemon" and x.seen == 1 %}
           !
-        {% elif x.content != "@" %}
-
-        {% else %}
+        {% elif x.content != "movieradar" and x.seen == 1%}
           *
+        {% elif not x.content %}
+           
+        {% elif x.content != "@" %}
+          ?
         {% endif %}
       </td>
       {% endfor %}
