@@ -18,7 +18,15 @@ class Moviedex_detail(TemplateView):
     @loadSession_middleware
     def get(self, request, moviemon_id):
         game = GameData.load(load_session_data())
-        self.context = game.moviemon[moviemon_id]
+        self.context = {
+            "actors": game.moviemon[moviemon_id].actors,
+            "director": game.moviemon[moviemon_id].director,
+            "plot": game.moviemon[moviemon_id].plot,
+            "poster": game.moviemon[moviemon_id].poster,
+            "title": game.moviemon[moviemon_id].title,
+            "rating": game.moviemon[moviemon_id].rating,
+            "year": game.moviemon[moviemon_id].year,
+        }
         key = request.GET.get('key', None)
         if (key is not None):
             print(key)

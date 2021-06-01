@@ -31,7 +31,8 @@ class Moviedex(TemplateView):
                 if (MoviedexState['posistion'] < len(game.captured_list) - 1):
                     MoviedexState['posistion'] += 1
             if (key == 'a'):
-                return redirect('moviedex_detail', moviemon_id=game.captured_list[MoviedexState['posistion']])
+                if (len(game.captured_list)):
+                    return redirect('moviedex_detail', moviemon_id=game.captured_list[MoviedexState['posistion']])
             elif (key == 'b'):
                 return redirect('worldmap')
             elif (key == 'start'):
@@ -44,25 +45,25 @@ class Moviedex(TemplateView):
         if (MoviedexState['posistion'] > 0):
             id = game.captured_list[MoviedexState['posistion'] - 1]
             self.context['movies'].append({
-                'poster': game.moviemon[id]['poster'],
+                'poster': game.moviemon[id].poster,
                 'class': 'moviedex-blur'
             })
         if (len(game.captured_list) > 0):
             id = game.captured_list[MoviedexState['posistion']]
             self.context['movies'].append({
-                'poster': game.moviemon[id]['poster'],
+                'poster': game.moviemon[id].poster,
                 'class': 'moviedex-ative '
             })
         if (MoviedexState['posistion'] < len(game.captured_list) - 1):
             id = game.captured_list[MoviedexState['posistion'] + 1]
             self.context['movies'].append({
-                'poster': game.moviemon[id]['poster'],
+                'poster': game.moviemon[id].poster,
                 'class': 'moviedex-blur'
             })
         if (MoviedexState['posistion'] == 0 and 1 < len(game.captured_list)):
             id = game.captured_list[2]
             self.context['movies'].append({
-                'poster': game.moviemon[id]['poster'],
+                'poster': game.moviemon[id].poster,
                 'class': 'moviedex-blur'
             })
 

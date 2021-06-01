@@ -1,7 +1,19 @@
 {% extends 'base.html' %} {% block title %}
-<title>LOAD | MOVIEMON</title>
+<title>SAVE | MOVIEMON</title>
 {% endblock title %} {% block content %}
-<div class="">
-  <h1>Load screen</h1>
+<div class="save_scene">
+  <div class="save-comment-block">
+    <div class="save-comment-a" {% if active == 0 %}style="color:blue; text-shadow: 1px 1px 1px navy;"{% endif %}>
+      {{ A }}
+    </div>
+    <div class="save-comment-b" {% if active == 1 %}style="color:blue; text-shadow: 1px 1px 1px navy;"{% endif %}>
+      {{ B }}
+    </div>
+    <div class="save-comment-c" {% if active == 2 %}style="color:blue; text-shadow: 1px 1px 1px navy;"{% endif %}>
+      {{ C }}
+    </div>
+    <div class="save-button-a">🅰 Load</div>
+    <div class="save-button-b">🅱 Back</div><br>
+  </div>
 </div>
 {% endblock content %}
