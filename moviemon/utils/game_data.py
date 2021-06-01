@@ -14,6 +14,7 @@ import json
 import pickle
 import random
 
+
 def make_save_dir():
     if not os.path.isdir('saved_game'):
         os.mkdir('saved_game')
@@ -100,8 +101,13 @@ class GameData():
         return self.moviemon[moviemon_id]
 
     def get_random_movie(self):
+<<<<<<< HEAD
         print(self.moviemon.keys())
         id_list = [m for m in self.moviemon.keys() if not m in self.captured_list]
+=======
+        id_list = [m for m in self.moviemon.keys(
+        ) if not m in self.captured_list]
+>>>>>>> 0cc008b9945828bd2f2c6a62431d2ad0a602c592
         return random.choice(id_list)
 
     def get_strength(self) -> int:
@@ -152,7 +158,13 @@ class GameData():
         #         value["Plot"],
         #         value["Actors"],
         #     )
+<<<<<<< HEAD
         result.map = init_map(*settings.GRID_SIZE)
+=======
+
+        result.map = init_map(*settings.GRID_SIZE)
+
+>>>>>>> 0cc008b9945828bd2f2c6a62431d2ad0a602c592
         for id in settings.IMDB_LIST:
             params = {
                 "apikey": settings.OMDB_API_KEY,
