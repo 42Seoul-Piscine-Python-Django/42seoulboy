@@ -11,17 +11,17 @@
     {% for y in engine %}
     <tr>
       {% for x in y %}
-        <td style="background-color: rgb(238,  238, 238); width:10%; height:10%; text-align:center;">
-          {% if x == "@" %}
-            @
-          {% elif x == "movieball" %}
-            ?
-          {% elif x == "moviemon" %}
-            ?
-          {% else %}
-            {{x}}
-          {% endif %}
-        </td>
+      <td style="background-color: rgb(185,  200, {{x.cool}}); width:10%; height:10%; text-align:center;">
+        {% if x.content == "@" %}
+        ♕
+        {% elif x.content == "movieball" %}
+        ?
+        {% elif x.content == "moviemon" %}
+        ?
+        {% else %}
+        X
+        {% endif %}
+      </td>
       {% endfor %}
     </tr>
     {% endfor %}

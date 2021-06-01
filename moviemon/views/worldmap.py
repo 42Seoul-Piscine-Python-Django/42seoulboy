@@ -54,6 +54,7 @@ class Worldmap(TemplateView):
                 self.engine.move(*key.get("args"))
                 self.context = {"engine": self.engine.render()}
                 self.engine.collisioncheck(data)
+                self.engine.update()
                 data.update("pos", (self.engine.px, self.engine.py))
                 data.update("map", self.engine.map, save=True)
                 return redirect(request.path)

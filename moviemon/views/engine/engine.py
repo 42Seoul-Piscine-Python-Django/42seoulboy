@@ -38,22 +38,22 @@ class Engine:
         """
         새 2차원 배열에 객체들을 그래픽 처리해 추가하여 반환.
         즉 2차원 배열 + 값들(1차원) = 3차원 배열(?!)
-
         """
+        return self.camera.render(self.map, self.px, self.py)
         # return self.camera.render(self.map, self.px, self.py)
 
-        lines = []
-        for y in range(self.height):
-            l = ""
-            for x in range(self.width):
-                if (self.py, self.px) == (y, x):
-                    l += "O"
-                elif self.map[y][x].content:
-                    l += "?"
-                else:
-                    l += "X"
-            lines.append(l)
-        pre_render = lines
+        # lines = []
+        # for y in range(self.height):
+        #     l = ""
+        #     for x in range(self.width):
+        #         if (self.py, self.px) == (y, x):
+        #             l += "O"
+        #         elif self.map[y][x].content:
+        #             l += "?"
+        #         else:
+        #             l += "X"
+        #     lines.append(l)
+        # pre_render = lines
         # for l in pre_render:
         #     print(l)
 
@@ -85,6 +85,15 @@ class Engine:
 
         if self.map[self.py][self.px].content == "moviemon":
             self.map[self.py][self.px].content = ""
+
+    def update(self):
+        self.map[self.py][self.px].visit()
+        for y in self.map:
+            for x in y:
+                x.update()
+                if x.content == "@":
+                    x.content = ""
+        self.map[self.py][self.px].content = "@"
 
 
 if __name__ == "__main__":

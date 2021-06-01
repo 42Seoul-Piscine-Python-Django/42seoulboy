@@ -13,19 +13,19 @@ class Tile:
         """ """
         self.content = content
         self.visited = visited
-        self.heat = 0
+        self.cool = 100
 
     def __str__(self):
         return self.content
 
-    def visit(self, heat=10):
-        self.heat = 10
+    def visit(self, cool=0):
+        self.cool = cool
 
     def update(self):
         """
         업데이트!
         """
-        self.heat = max(self.heat - 1, 0)
+        self.cool = min(self.cool + 10, 100)
 
 
 def init_map(width, height):
