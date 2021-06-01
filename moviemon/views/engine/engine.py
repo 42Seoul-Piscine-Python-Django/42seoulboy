@@ -26,7 +26,8 @@ class Engine:
         self.movball = movball
         self.state = None
         self.camera = Camera(screen, offset)
-        self.update()
+        self.map[self.py][self.px].content = "@"
+        #self.update()
 
     def move(self, x, y):
         if 0 <= self.px + x <= self.width - 1:
@@ -71,14 +72,14 @@ class Engine:
                     x.content = ""
         self.map[self.py][self.px].content = "@"
         print("pop")
-        if True:
-        #if random.randint(1, 10) == 1:
+        #if True:
+        if random.randint(1, 10) == 1:
             mmap = populate_movieball(
                 self.map,
                 self.height,
                 self.width,
                 (self.px, self.py),
-                random.randint(1, 4)
+                random.randint(1, 3)
             )
 
 
