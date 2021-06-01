@@ -1,3 +1,4 @@
+from moviemon.utils.jwt_moviemon import get_moviemonid
 from moviemon.utils.game_data import GameData, load_session_data
 from moviemon.middleware.loadSessionMiddleware import loadSession_middleware
 from django.shortcuts import redirect, render
@@ -18,14 +19,17 @@ class Moviedex_detail(TemplateView):
     @loadSession_middleware
     def get(self, request, moviemon_id):
         game = GameData.load(load_session_data())
+        moviemon_id = get_moviemonid(moviemon_id)
+        if moviemon_id is None:
+            return redirect("title")
         self.context = {
-            "actors": game.moviemon[moviemon_id].actors,
-            "director": game.moviemon[moviemon_id].director,
-            "plot": game.moviemon[moviemon_id].plot,
-            "poster": game.moviemon[moviemon_id].poster,
-            "title": game.moviemon[moviemon_id].title,
-            "rating": game.moviemon[moviemon_id].rating,
-            "year": game.moviemon[moviemon_id].year,
+            "actors": game.get_movie(moviemon_id).actors,
+            "director": game.get_movie(moviemon_id).director,
+            "plot": game.get_movie(moviemon_id).plot,
+            "poster": game.get_movie(moviemon_id).poster,
+            "title": game.get_movie(moviemon_id).title,
+            "rating": game.get_movie(moviemon_id).rating,
+            "year": game.get_movie(moviemon_id).year,
         }
         key = request.GET.get('key', None)
         if (key is not None):

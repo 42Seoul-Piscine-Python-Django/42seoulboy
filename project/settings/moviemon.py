@@ -1,5 +1,7 @@
 from os import environ
 
+SECRET_KEY = "hekim2"
+
 OMDB_API_KEY = '2562735f' if environ.get(
     'OMDB_API_KEY') is None else environ.get('OMDB_API_KEY')
 
@@ -7,6 +9,7 @@ GRID_SIZE = (14, 14)
 SCREEN_SIZE = (10, 10)
 SCREEN_OFFSET = (-5, -5)
 PLAYER_INIT_POS = (5, 5)
+PLAYER_INIT_MOVBALL = 20
 MOVIEBALL_POP_PROB = 10
 
 IMDB_LIST = [
@@ -54,4 +57,23 @@ IMDB_LIST = [
     "tt1415872",
     "tt7904362",
     "tt1788453",
+]
+IMDB_LIST_KOR = [
+    "tt0364569",
+    "tt5215952",
+    "tt8850222",
+    "tt7057496",
+    "tt11777040",
+    "tt0428870",
+    "tt4844288",
+    "tt11358398",
+    "tt5066556",
+    "tt6890582",
+    "tt8290698",
+    "tt7046826",
+    "tt10530286",
+    "tt2990738",
+    "tt0289181",
+    "tt2972482",
+    "tt4682562",
 ]

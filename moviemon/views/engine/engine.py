@@ -5,9 +5,10 @@ from moviemon.utils.moviemon import Moviemon
 from moviemon.views.battle import battleState
 
 from .map import Tile
-from .map import init_map
+from .map import init_map, populate_movieball
 from .camera import Camera
 
+import random
 
 class Engine:
     """
@@ -69,13 +70,22 @@ class Engine:
                 if x.content == "@":
                     x.content = ""
         self.map[self.py][self.px].content = "@"
+        print("pop")
+        if True:
+        #if random.randint(1, 10) == 1:
+            mmap = populate_movieball(
+                self.map,
+                self.height,
+                self.width,
+                (self.px, self.py),
+                random.randint(1, 4)
+            )
 
 
 if __name__ == "__main__":
     """
     엔진 쇼케이스: wasd로 이동, q/x 로 종료.
     """
-
     engine = Engine((10, 10), (6, 6), (-3, -3))
     #engine.add((2, 3), Moviemon("123456"))
     import sys
@@ -83,7 +93,6 @@ if __name__ == "__main__":
     engine.info()
     while True:
         char = input()
-
         if char in ["q", "x"]:
             sys.exit()
         elif char == "w":

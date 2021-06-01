@@ -27,14 +27,14 @@ class Save(TemplateView):
                 return redirect('options')
             return redirect(request.path)
         slots = load_slot_info()
-        score = 'none' if slots.get(
-            'A', None) is None else slots.get('A', 'none').get('score', 'none')
+        score = 'Free' if slots.get(
+            'A', None) is None else slots.get('A').get('score', 'Free')
         self.context['A'] = "Slot 🅰 : {}".format(score)
-        score = 'none' if slots.get(
-            'B', None) is None else slots.get('B', 'none').get('score', 'none')
+        score = 'Free' if slots.get(
+            'B', None) is None else slots.get('B').get('score', 'Free')
         self.context['B'] = "Slot 🅱 : {}".format(score)
-        score = 'none' if slots.get(
-            'C', None) is None else slots.get('C', 'none').get('score', 'none')
+        score = 'Free' if slots.get(
+            'C', None) is None else slots.get('C').get('score', 'Free')
         self.context['C'] = "Slot 🅲 : {}".format(score)
         self.context['active'] = optionState['menu']
         return render(request, self.template_name, self.context)

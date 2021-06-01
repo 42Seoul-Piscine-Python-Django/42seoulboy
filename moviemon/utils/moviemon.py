@@ -29,6 +29,7 @@ class Moviemon:
         })
 
 
+
 if __name__ == "__main__":
     the_host = Moviemon(12345, "괴물", "some.image.url", "4.5")
     print(the_host)

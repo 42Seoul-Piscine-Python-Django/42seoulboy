@@ -12,7 +12,7 @@ from moviemon.views.engine.map import Tile
 import requests
 import json
 import pickle
-
+import random
 
 def make_save_dir():
     if not os.path.isdir('saved_game'):
@@ -58,12 +58,12 @@ def save_slot(slot):
         try:
             score = "{}/{}".format(len(data['captured_list']),
                                    len(data['moviemon']))
-            file = f"saved_game/slot{slot}_{len(data['captured_list'])}_{len(data['moviemon'])}.mmg"
+            if slots.get(f'{slot}', None) is not None:
+                if os.path.isfile(slots[f'{slot}']['file']):
+                    os.remove(slots[f'{slot}']['file'])
+            file = f"saved_game/slot{slot}_{len(data['captured_list'])}.mmg"
             with open(file, "wb") as f:
                 pickle.dump(data, f)
-            if slots.get(f'slot{slot}', None) is not None:
-                if os.path.isfile(slots[f'slot{slot}']['file']):
-                    os.remove(slots[f'slot{slot}']['file'])
             slots[f'{slot}'] = {
                 "score": score,
                 "file": file,
@@ -82,7 +82,7 @@ def load_slot(slot):
     if slot == None:
         return False
     try:
-        shutil(slot['file'], "saved_game/session.bin")
+        shutil.copy(slot['file'], "saved_game/session.bin")
         return True
     except:
         return False
@@ -93,8 +93,24 @@ class GameData():
         self.pos: Tuple[int, int] = settings.PLAYER_INIT_POS
         self.captured_list: List[str] = []
         self.moviemon: Dict[str, Moviemon] = {}
-        self.movieballCount: int = 10
+        self.movieballCount: int = settings.PLAYER_INIT_MOVBALL
         self.map: List[List[Tile]] = []
+
+    def get_movie(self, moviemon_id):
+        return self.moviemon[moviemon_id]
+
+    def get_random_movie(self):
+        id_list = [m for m in self.moviemon.keys() if not m in self.captured_list]
+        return random.choice(id_list)
+
+    def get_strength(self) -> int:
+        captured_list = self.load(load_session_data()).captured_list
+        sum_captured_rating = 3
+        for i in captured_list:
+            sum_captured_rating += self.moviemon[i].rating
+        if (len(captured_list) == 0):
+            return int(sum_captured_rating / 1)
+        return int(sum_captured_rating / len(captured_list))
 
     def dump(self):
         return {

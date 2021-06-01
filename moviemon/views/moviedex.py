@@ -1,3 +1,4 @@
+from moviemon.utils.jwt_moviemon import get_moviemon_token
 from moviemon.middleware.loadSessionMiddleware import loadSession_middleware
 from django.shortcuts import redirect, render
 from django.views.generic import TemplateView
@@ -20,11 +21,7 @@ class Moviedex(TemplateView):
         key = request.GET.get('key', None)
         if (key is not None):
             print(key)
-            if (key == 'up'):
-                pass
-            elif (key == 'down'):
-                pass
-            elif (key == 'left'):
+            if (key == 'left'):
                 if (MoviedexState['posistion'] > 0):
                     MoviedexState['posistion'] -= 1
             elif (key == 'right'):
@@ -32,13 +29,10 @@ class Moviedex(TemplateView):
                     MoviedexState['posistion'] += 1
             if (key == 'a'):
                 if (len(game.captured_list)):
-                    return redirect('moviedex_detail', moviemon_id=game.captured_list[MoviedexState['posistion']])
-            elif (key == 'b'):
-                return redirect('worldmap')
-            elif (key == 'start'):
-                pass
+                    moviemon_id=get_moviemon_token(game.captured_list[MoviedexState['posistion']])
+                    return redirect('moviedex_detail', moviemon_id=moviemon_id)
             elif (key == 'select'):
-                pass
+                return redirect('worldmap')
             return redirect(request.path)
 
         self.context['movies'] = []

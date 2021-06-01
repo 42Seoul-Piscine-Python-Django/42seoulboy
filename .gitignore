@@ -296,4 +296,4 @@ $RECYCLE.BIN/
 # End of https://www.toptal.com/developers/gitignore/api/macos,windows,linux,python,django
 
 test.json
-session.bin
+saved_game/
