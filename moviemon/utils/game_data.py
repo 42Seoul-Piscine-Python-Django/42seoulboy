@@ -14,6 +14,7 @@ import json
 import pickle
 import random
 
+
 def make_save_dir():
     if not os.path.isdir('saved_game'):
         os.mkdir('saved_game')
@@ -100,7 +101,8 @@ class GameData():
         return self.moviemon[moviemon_id]
 
     def get_random_movie(self):
-        id_list = [m for m in self.moviemon.keys() if not m in self.captured_list]
+        id_list = [m for m in self.moviemon.keys(
+        ) if not m in self.captured_list]
         return random.choice(id_list)
 
     def get_strength(self) -> int:
@@ -136,40 +138,41 @@ class GameData():
         result = GameData()
         URL = "http://www.omdbapi.com/"
 
-        f = open("test.json", 'r')
-        data = json.load(f)
-        f.close()
+        # f = open("test.json", 'r')
+        # data = json.load(f)
+        # f.close()
 
-        for value in data:
-            # result.captured_list.append(value["imdbID"])
-            result.moviemon[value["imdbID"]] = Moviemon(
-                value["Title"],
-                value["Year"],
-                value["Director"],
-                value["Poster"],
-                float(value["imdbRating"]),
-                value["Plot"],
-                value["Actors"],
-            )
+        # for value in data:
+        #     # result.captured_list.append(value["imdbID"])
+        #     result.moviemon[value["imdbID"]] = Moviemon(
+        #         value["Title"],
+        #         value["Year"],
+        #         value["Director"],
+        #         value["Poster"],
+        #         float(value["imdbRating"]),
+        #         value["Plot"],
+        #         value["Actors"],
+        #     )
+
         result.map = init_map(*settings.GRID_SIZE)
-        # print(game.)
-        # for id in settings.IMDB_LIST:
-        #     params = {
-        #         "apikey": settings.OMDB_API_KEY,
-        #         "i": id
-        #     }
-        #     try:
-        #         data = requests.get(URL, params=params).json()
-        #         result.moviemon[id] = Moviemon(
-        #             value["Title"],
-        #             value["Year"],
-        #             value["Director"],
-        #             value["Poster"],
-        #             float(value["imdbRating"]),
-        #             value["Plot"],
-        #             value["Actors"],
-        #         )
-        #     except Exception as e:
-        #         assert e
+
+        for id in settings.IMDB_LIST:
+            params = {
+                "apikey": settings.OMDB_API_KEY,
+                "i": id
+            }
+            try:
+                data = requests.get(URL, params=params).json()
+                result.moviemon[id] = Moviemon(
+                    data["Title"],
+                    data["Year"],
+                    data["Director"],
+                    data["Poster"],
+                    float(data["imdbRating"]),
+                    data["Plot"],
+                    data["Actors"],
+                )
+            except Exception as e:
+                assert e
 
         return result
