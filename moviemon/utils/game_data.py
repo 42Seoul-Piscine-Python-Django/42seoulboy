@@ -109,13 +109,27 @@ class GameData:
         return random.choice(id_list)
 
     def get_strength(self) -> int:
-        captured_list = self.load(load_session_data()).captured_list
-        sum_captured_rating = 3
-        for i in captured_list:
-            sum_captured_rating += self.moviemon[i].rating
-        if len(captured_list) == 0:
-            return int(sum_captured_rating / 1)
-        return int(sum_captured_rating / len(captured_list))
+        # return average of best six moviemon ratings
+        ratings = sorted(
+            [
+                self.moviemon[i].rating
+                for i in self.load(load_session_data()).captured_list
+            ],
+            reverse=True,
+        )
+
+        if ratings:
+            numsend = min(6, len(ratings))
+            return int(sum(ratings[:numsend]) / numsend)
+        else:
+            return 1
+
+        # sum_captured_rating = 3
+        # for i in captured_list:
+        #     sum_captured_rating += self.moviemon[i].rating
+        # if len(captured_list) == 0:
+        #     return int(sum_captured_rating / 1)
+        # return int(sum_captured_rating / len(captured_list))
 
     def dump(self):
         return {
