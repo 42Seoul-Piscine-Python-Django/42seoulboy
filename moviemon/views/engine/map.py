@@ -55,6 +55,17 @@ def populate_moviemon(mmap, height, width, ppos, total=len(settings.IMDB_LIST)):
     return mmap
 
 
+def populate_movieradar(mmap, height, width, ppos, total=None):
+    i = 0
+    for _ in range(100):
+        x, y = random.randint(0, width - 1), random.randint(0, height - 1)
+        if (x, y) != ppos and not mmap[y][x].content:
+            i += 1
+            mmap[y][x].content = "movieradar"
+        if i >= total:
+            break
+
+
 def populate_movieball(mmap, height, width, ppos, total=None):
     """
     density: 1 ~ 100 사이의 확률. 다른 값 가져와도 무조건 그 사이야~

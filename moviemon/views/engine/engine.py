@@ -10,7 +10,7 @@ from moviemon.utils.moviemon import Moviemon
 from moviemon.views.battle import battleState
 
 from .map import Tile, populate_moviemon
-from .map import populate_movieball, populate_moviemon
+from .map import populate_movieball, populate_moviemon, populate_movieradar
 from .camera import Camera
 
 import random
@@ -73,8 +73,21 @@ class Engine:
     def collisioncheck(self):
         if self.__coll("movieball"):
             self.movball += 1
+            self.state = "movieball"
+        if self.__coll("movieradar"):
+            self.state = "movieradar"
         if self.__coll("moviemon"):
             self.state = "battle"
+
+    def spawn(self, func, mbprob, amount):
+        if random.randint(1, mbprob) == 1:
+            func(
+                self.map,
+                self.height,
+                self.width,
+                (self.px, self.py),
+                random.randint(1, amount),
+            )
 
     def update(self):
         self.collisioncheck()
@@ -87,16 +100,9 @@ class Engine:
         self.map[self.py][self.px].content = "@"
         # print("pop")
         # if True:
-        if random.randint(1, 10) == 1:
-            populate_movieball(
-                self.map,
-                self.height,
-                self.width,
-                (self.px, self.py),
-                random.randint(1, 3),
-            )
-        # if random.randint(1, 10) == 1:
-        if True:
+        self.spawn(populate_movieball, 10, 3)
+        self.spawn(populate_movieradar, 10, 1)
+        if random.randint(1, 4) == 1:
             map_moviemons = 0
             for y in self.map:
                 for x in y:
@@ -109,15 +115,7 @@ class Engine:
                 f"tot - my:{self.total_moviemons - self.my_moviemons}"
             )
             if map_moviemons <= self.total_moviemons - self.my_moviemons:
-                to_add = random.randint(1, 3)
-                print(f"populated {to_add} moviemons")
-                populate_moviemon(
-                    self.map,
-                    self.height,
-                    self.width,
-                    (self.px, self.py),
-                    to_add,
-                )
+                self.spawn(populate_moviemon, 5, 3)
 
 
 if __name__ == "__main__":

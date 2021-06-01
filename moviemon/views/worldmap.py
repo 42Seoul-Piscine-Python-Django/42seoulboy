@@ -10,8 +10,10 @@ from django.views.generic import TemplateView
 from django.conf import settings
 
 from .engine.engine import Engine
+from .engine.message import Message
 
 states = {"flush": False}
+msg = Message("none")
 
 
 class Worldmap(TemplateView):
@@ -22,9 +24,6 @@ class Worldmap(TemplateView):
     def get(self, request):
         game = GameData.load(load_session_data())
         key = request.GET.get("key", None)
-        """
-        TODO: key에 대한 이벤트 핸들링 필요
-        """
         print(game.pos)
         # print(game.moviemon)
         # print(game.get_random_movie())
@@ -38,6 +37,8 @@ class Worldmap(TemplateView):
             len(game.captured_list),
             game.map,
         )
+        if not states["flush"] and msg.key == "battle":
+            msg("none", single=True)
         if key is not None:
             # print(key)
             if not states["flush"]:
@@ -69,16 +70,20 @@ class Worldmap(TemplateView):
             game.movieballCount = engine.movball
             print("saving...")
             save_session_data(game.dump())
+
             if engine.state == "battle":
                 print("BATTLE")
                 states["flush"] = True
+                msg(engine.state, single=True)
                 # return redirect('battle', moviemon_id=game.get_random_movie())
+            elif engine.state:
+                msg(engine.state)
             return redirect(request.path)
             # return redirect('battle', moviemon_id=game.get_random_movie())
         self.context = {
             "flush": states["flush"],
             "engine": engine.render(),
             "movieballs": game.movieballCount,
-            "message": "temp",
+            "message": str(msg),
         }
         return render(request, self.template_name, self.context)
