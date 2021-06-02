@@ -5,5 +5,4 @@ location="$(pwd)/.venv"
 
 source $location/bin/activate
 
-cd d04
 python manage.py runserver
