@@ -2,6 +2,7 @@ from moviemon.utils.jwt_moviemon import get_moviemonid
 from moviemon.middleware.loadSessionMiddleware import loadSession_middleware
 from django.shortcuts import redirect, render
 from django.views.generic import TemplateView
+from django.http.response import HttpResponseNotFound
 from ..utils.game_data import load_session_data, GameData, save_session_data
 from .engine.utils import clip
 import random
@@ -39,7 +40,7 @@ class Battle(TemplateView):
 
     def useball(self, game, request, moviemon_id):
         getchance = self.calculate_winning_rate(game, moviemon_id)
-        if getchance >= random.randrange(1, 100):
+        if getchance >= random.randrange(1, 101):
             battleState["text"] = "Gotcha!! {} "
             battleState["button-text"] = "🅰 Continue"
             game.captured_list.append(moviemon_id)
@@ -55,7 +56,7 @@ class Battle(TemplateView):
         game = GameData.load(load_session_data())
         moviemon_id = get_moviemonid(moviemon_id)
         if moviemon_id is None or game.moviemon.get(moviemon_id, None) is None:
-            return redirect("title")
+            return HttpResponseNotFound(request)
         # self.context['moviemon_id'] = moviemon_id
         """
         TODO: moviemon_id를 이용하여 데이터 가져오고 template 한테 전달 필요,
@@ -68,7 +69,7 @@ class Battle(TemplateView):
         if moviemon_id not in game.captured_list:
             if moviemon_id != battleState["id"]:
                 battleState["text"] = "Wild {} appeared."
-                battleState["button-text"] = "🅰 Use Movie Ball   🅱 Run"
+                battleState["button-text"] = "🅰 Launch Movie Ball   🅱 Run"
                 battleState["id"] = moviemon_id
         else:
             battleState["text"] = "Gotcha!! {} "

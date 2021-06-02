@@ -64,7 +64,7 @@ def save_slot(slot):
             if slots.get(f"{slot}", None) is not None:
                 if os.path.isfile(slots[f"{slot}"]["file"]):
                     os.remove(slots[f"{slot}"]["file"])
-            file = f"saved_game/slot{slot}_{len(data['captured_list'])}.mmg"
+            file = f"saved_game/slot{slot}_{len(data['captured_list'])}_{len(data['moviemon'])}.mmg"
             with open(file, "wb") as f:
                 pickle.dump(data, f)
             slots[f"{slot}"] = {
