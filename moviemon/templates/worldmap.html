@@ -36,7 +36,14 @@
 <div class="worldmap-movieball">Movieball ✖ {{movieballs}}</div>
 {% if flush %}
   <div class="worldmap-flush-block">
-    <div class="worldmap-flush-comment">🅰 Start to catch</div>
+    <div class="worldmap-flush-comment">
+      {% if flush == "battle" %}
+        🅰 Start to catch
+      {% elif flush == "win" %}
+        <p style="margin-top: -2.4vh;">You've catched all {{moviemons}} moviemons and became the glorious <i>Moviemon Master!</i></p>
+        <p>🅰 return to title</p>
+      {% endif %}
+    </div>
   </div>
 {% endif %}
 {% endblock content %}

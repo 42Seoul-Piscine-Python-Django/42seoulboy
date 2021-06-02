@@ -12,20 +12,30 @@ from django.conf import settings
 from .engine.engine import Engine
 from .engine.message import Message
 
-states = {"flush": False}
+states = {"flush": None}
 msg = Message("none")
+worldstate = None
 
 
 class Worldmap(TemplateView):
     template_name = "worldmap.html"
     context = {}
 
+    def checkwin(self, game):
+        if len(game.captured_list) >= len(game.moviemon):
+            print("WINGAME")
+            states["flush"] = "win"
+        elif states["flush"] == "win":
+            states["flush"] = None
+
     @loadSession_middleware
     def get(self, request):
         game = GameData.load(load_session_data())
         key = request.GET.get("key", None)
-        print(game.pos)
-        # print(game.moviemon)
+        # print(game.pos)
+        gotmovie = f"{len(game.captured_list)}/{len(game.moviemon)}"
+        print(gotmovie)
+        self.checkwin(game)
         # print(game.get_random_movie())
         engine = Engine(
             settings.GRID_SIZE,
@@ -39,7 +49,7 @@ class Worldmap(TemplateView):
         )
         if not states["flush"] and msg.key == "battle":
             msg("none", single=True)
-        if key is not None:
+        if key and not states["flush"] == "win":
             # print(key)
             if not states["flush"]:
                 if key == "up":
@@ -56,11 +66,16 @@ class Worldmap(TemplateView):
                     return redirect("moviedex")
             else:
                 if key == "a":
-                    states["flush"] = False
-                    return redirect(
-                        "battle",
-                        moviemon_id=get_moviemon_token(game.get_random_movie()),
-                    )
+                    if states["flush"] == "battle":
+                        states["flush"] = None
+                        return redirect(
+                            "battle",
+                            moviemon_id=get_moviemon_token(
+                                game.get_random_movie()
+                            ),
+                        )
+                    else:
+                        raise Exception("invalid state", states["flush"])
                 pass
             if key == "b":
                 pass
@@ -73,17 +88,20 @@ class Worldmap(TemplateView):
 
             if engine.state == "battle":
                 print("BATTLE")
-                states["flush"] = True
+                states["flush"] = "battle"
                 msg(engine.state, single=True)
                 # return redirect('battle', moviemon_id=game.get_random_movie())
             elif engine.state:
                 msg(engine.state)
             return redirect(request.path)
             # return redirect('battle', moviemon_id=game.get_random_movie())
+        elif key and key == "a" and states["flush"] == "win":
+            return redirect("title")
         self.context = {
             "flush": states["flush"],
             "engine": engine.render(),
             "movieballs": game.movieballCount,
             "message": str(msg),
+            "moviemons": len(game.moviemon),
         }
         return render(request, self.template_name, self.context)
