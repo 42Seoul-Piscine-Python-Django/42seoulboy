@@ -2,7 +2,7 @@ from moviemon.utils.jwt_moviemon import get_moviemonid
 from moviemon.middleware.loadSessionMiddleware import loadSession_middleware
 from django.shortcuts import redirect, render
 from django.views.generic import TemplateView
-from django.http.response import HttpResponseNotFound
+from django.http import Http404
 from ..utils.game_data import load_session_data, GameData, save_session_data
 from .engine.utils import clip
 import random
@@ -56,7 +56,7 @@ class Battle(TemplateView):
         game = GameData.load(load_session_data())
         moviemon_id = get_moviemonid(moviemon_id)
         if moviemon_id is None or game.moviemon.get(moviemon_id, None) is None:
-            return HttpResponseNotFound(request)
+            raise Http404("moviemon_id is invaild!")
         # self.context['moviemon_id'] = moviemon_id
         """
         TODO: moviemon_id를 이용하여 데이터 가져오고 template 한테 전달 필요,

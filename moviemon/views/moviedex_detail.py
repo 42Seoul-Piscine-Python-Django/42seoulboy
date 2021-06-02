@@ -1,4 +1,4 @@
-from django.http.response import HttpResponseNotFound
+from django.http import Http404
 from moviemon.utils.jwt_moviemon import get_moviemonid
 from moviemon.utils.game_data import GameData, load_session_data
 from moviemon.middleware.loadSessionMiddleware import loadSession_middleware
@@ -19,7 +19,7 @@ class Moviedex_detail(TemplateView):
         game = GameData.load(load_session_data())
         moviemon_id = get_moviemonid(moviemon_id)
         if moviemon_id is None:
-            return HttpResponseNotFound(request)
+            raise Http404("moviemon_id is invaild!")
         self.context = {
             "actors": game.get_movie(moviemon_id).actors,
             "director": game.get_movie(moviemon_id).director,
