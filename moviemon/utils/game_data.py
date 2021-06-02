@@ -205,7 +205,10 @@ class GameData:
             max(3, int(total / 3)),
             7,
         )
-        result.map = init_map(*settings.GRID_SIZE, len(result.moviemon))
+        result.map = init_map(
+            *settings.GRID_SIZE,
+            int(random.uniform(0.5, 1) * len(result.moviemon)),
+        )
         # print("total result.moviemon:", len(result.moviemon))
 
         return result

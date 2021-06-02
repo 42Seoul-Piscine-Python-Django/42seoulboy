@@ -11,13 +11,13 @@ def clip(value, cliprange: tuple):
     return max(cliprange[0], min(value, cliprange[1]))
 
 
-def movieball(mon_str, player_str):
-    """
-    포획 성공 여부 반환 (무비몬, 플레이어의 힘을 비교)
-    """
-    chances = clip(50 - (mon_str * 10) + (player_str * 5), (1, 90))
+# def movieball(mon_str, player_str):
+#     """
+#     포획 성공 여부 반환 (무비몬, 플레이어의 힘을 비교)
+#     """
+#     chances = clip(50 - (mon_str * 10) + (player_str * 5), (1, 90))
 
-    return randint(1, 100) <= chances
+#     return randint(1, 100) <= chances
 
 
 def tester(testdict: dict):

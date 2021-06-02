@@ -3,6 +3,7 @@ from moviemon.middleware.loadSessionMiddleware import loadSession_middleware
 from django.shortcuts import redirect, render
 from django.views.generic import TemplateView
 from ..utils.game_data import load_session_data, GameData, save_session_data
+from .engine.utils import clip
 import random
 
 battleState = {
@@ -33,11 +34,8 @@ class Battle(TemplateView):
             - game.moviemon[moviemon_id].rating * 10
             + game.get_strength() * 5
         )
-        if getchance >= 90:
-            getchance = 90
-        elif getchance <= 1:
-            getchance = 1
-        return getchance
+        # return 100
+        return clip(getchance, (1, 90))
 
     def useball(self, game, request, moviemon_id):
         getchance = self.calculate_winning_rate(game, moviemon_id)

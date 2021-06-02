@@ -122,10 +122,10 @@ class Engine:
                 f"map_moviemons:{map_moviemons}"
                 f"total_moviemons:{self.total_moviemons}"
                 f"my_moviemons:{self.my_moviemons}"
-                f"tot - my:{self.total_moviemons - self.my_moviemons}"
+                f"(tot - my):{self.total_moviemons - self.my_moviemons}"
             )
             if map_moviemons <= self.total_moviemons - self.my_moviemons:
-                self.spawn(populate_moviemon, 5, 3)
+                self.spawn(populate_moviemon, 5, 1)
 
 
 if __name__ == "__main__":

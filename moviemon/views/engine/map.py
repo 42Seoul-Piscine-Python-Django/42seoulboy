@@ -104,7 +104,7 @@ def spawn_to_map(mmap, ppos, x, y, content, i):
     return i
 
 
-def populate_moviemon(mmap, height, width, ppos, total=len(settings.IMDB_LIST)):
+def populate_moviemon(mmap, height, width, ppos, total):
     i = 0
     while 1:
         x, y = random.randint(0, width - 1), random.randint(0, height - 1)
