@@ -12,10 +12,10 @@ from .utils import clip
 
 
 class Tile:
-    def __init__(self, content: str = None, seen=0):
+    def __init__(self, content: str = None):
         """ """
         self.content = content
-        self.seen = seen
+        self.seen = 0
         self.heat = 0
         self.rgb(152, 161, 154, 4, 3, 3)
         # self.r, self.g, self.b = 182, 191, 184
@@ -47,31 +47,41 @@ class Tile:
 def radar(mmap, ppos):
     import math
 
-    offset = (-2, -2)
+    def rangeint(x1, y1, x2, y2):
+        return int(
+            math.sqrt(math.pow(abs(x2 - x1), 2) + math.pow(abs(y2 - y1), 2))
+        )
+
+    offset = (-3, -3)
     x, y = ppos[0] + offset[0], ppos[1] + offset[1]
+    # radmap = [
+    #     ".###.",
+    #     "#####",
+    #     "#####",
+    #     "#####",
+    #     ".###.",
+    # ]
     radmap = [
-        ".###.",
-        "#####",
-        "#####",
-        "#####",
-        ".###.",
+        "..###..",
+        ".#####.",
+        "#######",
+        "#######",
+        "#######",
+        ".#####.",
+        "..###..",
     ]
-    for i in range(5):
-        for j in range(5):
+    for i in range(7):
+        for j in range(7):
             if radmap[i][j] == "#":
                 a, b = max(x + i, 0), max(y + j, 0)
                 try:
-                    mmap[b][a].visit(-16)
+                    # print(-16 + 5 * rangeint(ppos[0], ppos[1], a, b))
+                    mmap[b][a].heat = -20 + 4 * rangeint(ppos[0], ppos[1], a, b)
                     if mmap[b][a].content:
                         mmap[b][a].seen = 1
                 except Exception as e:
                     print(e)
                     pass
-
-    def ran(x1, y1, x2, y2):
-        return math.sqrt(math.pow(abs(x2 - x1)) + math.pow(abs(y2 - y1)))
-
-    pass
 
 
 def init_map(width, height, moviemons):
@@ -86,14 +96,19 @@ def init_map(width, height, moviemons):
     return mmap
 
 
+def spawn_to_map(mmap, ppos, x, y, content, i):
+    if (x, y) != ppos and not mmap[y][x].content and not mmap[y][x].heat:
+        mmap[y][x].content = content
+        mmap[y][x].seen = 0
+        return i + 1
+    return i
+
+
 def populate_moviemon(mmap, height, width, ppos, total=len(settings.IMDB_LIST)):
     i = 0
     while 1:
         x, y = random.randint(0, width - 1), random.randint(0, height - 1)
-        # rint("pop test:",x,y)
-        if (x, y) != ppos and not mmap[y][x].content:
-            i += 1
-            mmap[y][x].content = "moviemon"
+        i = spawn_to_map(mmap, ppos, x, y, "moviemon", i)
         if i >= total:
             break
     return mmap
@@ -103,9 +118,7 @@ def populate_movieradar(mmap, height, width, ppos, total=None):
     i = 0
     for _ in range(100):
         x, y = random.randint(0, width - 1), random.randint(0, height - 1)
-        if (x, y) != ppos and not mmap[y][x].content:
-            i += 1
-            mmap[y][x].content = "movieradar"
+        i = spawn_to_map(mmap, ppos, x, y, "movieradar", i)
         if i >= total:
             break
 
@@ -122,9 +135,7 @@ def populate_movieball(mmap, height, width, ppos, total=None):
     # print(f"h:{height} w:{width} we'll populate {total} movieballs!")
     for _ in range(10000):
         x, y = random.randint(0, width - 1), random.randint(0, height - 1)
-        if (x, y) != ppos and not mmap[y][x].content:
-            i += 1
-            mmap[y][x].content = "movieball"
+        i = spawn_to_map(mmap, ppos, x, y, "movieball", i)
         if i >= total:
             # print(f"populated {i} movieballs")
             return mmap
