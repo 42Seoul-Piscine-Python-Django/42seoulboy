@@ -54,7 +54,7 @@ class Moviedex(TemplateView):
                 'poster': game.moviemon[id].poster,
                 'class': 'moviedex-blur'
             })
-        if (MoviedexState['posistion'] == 0 and 1 < len(game.captured_list)):
+        if (MoviedexState['posistion'] == 0 and 2 < len(game.captured_list)):
             id = game.captured_list[2]
             self.context['movies'].append({
                 'poster': game.moviemon[id].poster,
